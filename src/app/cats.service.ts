@@ -46,7 +46,7 @@ export class CatsService {
   getCats2() {
     return this.http.get(this._urlEmea).
       pipe(map((result:ICatServiceResponse) => {
-        console.log(result); 
+        console.log(result);
         return result.response.getCat.getCat;
       })
         // map((cat: Cats[]) => {
