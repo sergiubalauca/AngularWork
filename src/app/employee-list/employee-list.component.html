@@ -1,0 +1,25 @@
+<h2>Param id is equal to: {{employeeId}}</h2>
+<button (click) = "goPrevious()">Previous</button>
+<div class="divider"></div>
+<button (click) = "goNext()">Next</button>
+
+<p>Employee list names</p>
+<ul *ngFor = "let employee of employees; let i = index">
+    <div *ngIf="employee.id == employeeId; then displayEmployee;">
+        {{ employee.name }}
+    </div>
+
+    <ng-template #displayEmployee>
+        <h2>
+            {{ employee.name }}
+        </h2>
+    </ng-template>
+    <!--<li>{{employee.name}}</li>-->
+</ul>
+
+<ng-template #dontDisplayEmployee>
+    <h2>
+        No employee data for this ID
+    </h2>
+</ng-template>
+

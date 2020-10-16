@@ -1,0 +1,25 @@
+<p> Sensor readings </p>
+<!--<ul *ngFor="let cat of cats2">
+    <li>{{cat.Id}} {{cat.Name}}</li>
+</ul>-->
+<body class="bg-img">  
+    <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <th *ngFor = "let column of headers">
+            {{column}}
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor = "let row of cats2">
+            <td *ngFor = "let column of headers">
+              {{row[column]}}
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<h3> Err is : {{errorMsg}} </h3>
+<h3> Seconds : {{timePassed}} </h3>
+

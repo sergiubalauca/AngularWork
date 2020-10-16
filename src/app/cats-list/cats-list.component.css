@@ -1,0 +1,15 @@
+.bg-img {
+    background-image: url('D:\Angular\intro2angular\src\app\cats-list\Background-image\backgr.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+  }
+
+  .table {
+    margin: auto;
+    float:right;
+    width: 31%; 
+ }

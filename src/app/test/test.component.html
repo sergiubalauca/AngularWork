@@ -1,0 +1,77 @@
+<h2 class="text-succes">
+    {{greetUser() | lowercase}} <!-- pipes: convert data before displaying it in the template -->
+</h2>
+<h2 [class] = "specialClass"> <!-- Class binding -->
+    {{greetUser() + ", how are you?"}}
+</h2>
+<h2 [class.text-danger] = "hasError"> <!-- Class binding check based on property in test.component.ts -->
+    {{greetUser()}}
+</h2>
+<h2 [ngClass] = "messageClasses"> <!-- Class binding multiple classes applied via ngClass, same for styles -->
+    {{greetUser()}}
+</h2>
+
+<h2 [style.color] = "hasError ? 'red' : 'green'"> <!-- Style binding property in test.component.ts -->
+    {{greetUser()}}
+</h2>
+
+<div [ngClass] = "messageClasses">
+    <button (click) = "onClick($event)">Press me</button> <!-- $event contains all the necessary info about the onClick event -->
+    {{greeting}}
+</div>
+
+<input [id] = "myId" type = "text" value = "Sergiu(initial value)">
+<!-- id = "{{myId}}": am facut o interpolare catre elementul anterior, ca sa ii iau id-ul -->
+<!--problema e ca nu merge cu pe atribute ale elementelor care vor boolean values => enclose [disabled] sau cu bind-disabled -->
+<input [disabled] = "isDisabled" id = "{{myId}}" type = "text" value = "Sergiu"> 
+
+<!-- Template reference variable with # -->
+<input #myInput type = "text">
+<button (click)="logMessage(myInput.value)">Log</button> <!-- with # I can save the value of an element in a DOM - a template reference variable --> 
+<br>
+<!-- Using ngModel to build two way binding with inputName in processShowDirective. Updatez ceva in view si e updatat si in model -->
+<input #myInput2 [(ngModel)] = "inputName" [ngClass] = "messageClasses" type = "text" 
+        (keyup)="processSwitch(myInput2.value);processShowDirective(myInput2.value);processColors(myInput2.value)">
+
+<!-- ngIF Switch For directives -->
+<div *ngIf = "showDirective; then filledIn; else mandatoryToFillIn"></div>
+<ng-template #filledIn>
+    <h2>
+        You typed: {{inputName}}
+    </h2>
+</ng-template>
+<ng-template #mandatoryToFillIn>
+    <h2>
+        Fill in something
+    </h2>
+</ng-template>
+
+<div [ngSwitch] = "color">
+    <div *ngSwitchCase = "'red'">You picked red color</div>
+    <div *ngSwitchCase = "'blue'">You picked blue color</div>
+    <div *ngSwitchCase = "'green'">You picked green color</div>
+    <div *ngSwitchDefault>Pick again</div>
+</div>
+
+<!-- ngFor directive -->
+<div *ngFor = "let color of colorArray; index as i; first as f; odd as o">
+    <h2>{{o}} {{f}} {{i}} {{color}}</h2>
+</div>
+
+<!-- Component interaction between test and app components with I/O decorators -->
+<h2>{{"Hello from parent, " + dataFromParent}}</h2>
+
+<button (click) = "fireEvent()">Send event from child</button>
+
+<!-- pipes: used to only transform data in the template, not to change the values -->
+<!--<h2> {{greetUser() | titlecase}} </h2> 
+<h2> {{greetUser() | slice:3}} </h2>
+<h2> {{greetUser() | slice:3:20}} </h2> 
+<h3> {{Person | json}} </h3> 
+<h3> {{5.678 | number:'3.4-5'}} </h3>
+<h3> {{0.25 | percent}} </h3>
+<h3> {{0.25 | currency: 'EUR': 'code'}} </h3>
+<h3> {{ date }} </h3>
+<h3> {{ date | date:'short'}} </h3>
+<h3> {{ date | date:'shortDate'}} </h3>-->
+<h3> {{ date | date:'longTime'}} </h3>
