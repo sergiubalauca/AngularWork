@@ -11,6 +11,7 @@ import { EmployeeService } from './employee.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CatsListComponent } from './cats-list/cats-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SensorListComponent } from './sensor-list/sensor-list.component';
 /*********** For the http calls and observables we are going to use */
 
 @NgModule({
@@ -21,7 +22,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     /*EmployeeListComponent,
     EmployeeDetailComponent,*/ /* Not needed to import the components because they are included in the const routingComponents */
     CatsListComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SensorListComponent
   ],
   imports: [
     BrowserModule,

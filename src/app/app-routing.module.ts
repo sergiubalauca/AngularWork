@@ -4,6 +4,7 @@ import { CatsListComponent } from './cats-list/cats-list.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { TestComponent } from './test/test.component';
 
 
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path:'employees/:id', component:EmployeeListComponent},
   {path:'employee-details', component: EmployeeDetailComponent},
   {path:'cats', component: CatsListComponent},
+  {path:'sensors', component: SensorListComponent},
   {path:'**', component: PageNotFoundComponent} /* Used for displaying page not found */
 ];
 
@@ -26,4 +28,5 @@ export class AppRoutingModule { }
 export const routingComponents = [EmployeeListComponent, 
                                   EmployeeDetailComponent, 
                                   CatsListComponent, 
+                                  SensorListComponent,
                                   PageNotFoundComponent];
