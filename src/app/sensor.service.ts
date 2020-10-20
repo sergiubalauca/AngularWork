@@ -19,7 +19,7 @@ export class SensorService {
   getSensors() {
     return this.http.get(this._urlEmea).
       pipe(map((result:ISensorServiceResponse) => {
-        console.log(result);
+        //console.log(result);
         return result.response.getSensor.getSensor;
       }));
   }

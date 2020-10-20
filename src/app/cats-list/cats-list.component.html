@@ -1,4 +1,4 @@
-<p> Sensor readings </p>
+<p> Some cats </p>
 <!--<ul *ngFor="let cat of cats2">
     <li>{{cat.Id}} {{cat.Name}}</li>
 </ul>-->
@@ -20,6 +20,18 @@
     </table>
   </div>
 </body>
+
+<div style="display: block">
+  <canvas baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+      [chartType]="barChartType"
+      (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)"></canvas>
+</div>
+
 <h3> Err is : {{errorMsg}} </h3>
 <h3> Seconds : {{timePassed}} </h3>
 

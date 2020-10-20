@@ -4,6 +4,7 @@ import { interval, pipe, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { IGetCatTable } from '../cat';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 @Component({
   selector: '[app-cats-detail]',
@@ -18,6 +19,7 @@ export class CatsListComponent implements OnInit {
   public secondsCounter = interval(10000);
   public timePassed: number;
   headers = ["Id", "Name", "Colour"];
+  public graphData = [];
 
   constructor(private _catService: CatsService, private http: HttpClient) { }
 
@@ -25,21 +27,23 @@ export class CatsListComponent implements OnInit {
     /* gets called once the compoenents has been initialized
      * I am going to fetch the emplyee data here, declare the dependency mentioned in the constructor 
      */
-    this._catService.getCats()
-      .pipe(map(res => res['response']))
-      .subscribe(data => {
-        this.cats = data; /* assign the data  received from the observable to the local employees property */
-        //console.log(data);
-        //console.log(this.cats2);
-      },
-        error => { this.errorMsg = error });
+    // this._catService.getCats()
+    //   .pipe(map(res => res['response']))
+    //   .subscribe(data => {
+    //     /* assign the data  received from the observable to the local employees property */
+    //     this.cats = data; 
+    //     //console.log(data);
+    //     //console.log(this.cats2);
+    //   },
+    //     error => { this.errorMsg = error });
 
     this.getCatsList();
 
     // Subscribe to begin publishing values
     const subscription = this.secondsCounter.subscribe(n => {//console.log(`It's been ${n + 1} seconds since subscribing!`);
       this.timePassed = n + 100;
-      this.getCatsList();
+      this.getCatsList();   
+        
     });
     
     // this.getCatsList();
@@ -50,10 +54,42 @@ export class CatsListComponent implements OnInit {
     this._catService
       .getCats2()
       .subscribe((data: any) => {
-        console.log(data);
+        console.log("Retrieving cats...");
          this.cats2 = data;
-        // console.log(this.cats2);
+         this.graphData.length = 0;
+
+         this.cats2.forEach(element => {
+          this.graphData.push(element.Id);
+        });
+        
+        this.graphData.forEach(elem => {
+          console.log(elem); 
+        })
+        
+         
       });
+  }
+
+  public barChartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels: string[] = ['Read 10', 'Read 9', 'Read 8', 'Read 7', 'Read 6', 'Read 5', 'Read 4', 'Read 3', 'Read 2', 'Read 1'];
+  public barChartType: string = 'bar';
+  public barChartLegend: boolean = true;
+
+  public barChartData: any[] = [
+    { data:this.graphData, label: 'Series A' },
+    //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+  ];
+
+  // events
+  public chartClicked(e: any): void {
+      console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+      console.log(e);
   }
 
 }

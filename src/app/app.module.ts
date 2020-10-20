@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CatsListComponent } from './cats-list/cats-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
+import { ChartsModule } from 'ng2-charts';
 /*********** For the http calls and observables we are going to use */
 
 @NgModule({
@@ -29,9 +30,11 @@ import { SensorListComponent } from './sensor-list/sensor-list.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule, /* This is for the ngDirective - two way binding */
-    HttpClientModule /************ For the http calls and observables we are going to use 
-                      * we are using it in employee.service.ts as private http:HttpClient in the constructor 
-                      */
+    /* For the http calls and observables we are going to use 
+     * we are using it in employee.service.ts as private http:HttpClient in the constructor 
+     */
+    HttpClientModule,
+    ChartsModule
   ],
   providers: [EmployeeService], /* Registered (linked) the service at module level, in order for it to be
                                  * available for all the sub hierarchy classes and components - step 2 for using a service
