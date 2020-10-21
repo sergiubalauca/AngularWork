@@ -22,6 +22,7 @@ export class SensorListComponent implements OnInit {
   private graphData = [];
   private avgData = [];
   private average:number;
+  private averageArray = [];
 
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -75,9 +76,11 @@ export class SensorListComponent implements OnInit {
           this.average = Math.round(this.graphData.map(function(x,i,arr){return x/arr.length}).reduce(function(a,b){return a + b}));
           this.avgData.push(this.average);
         });
-//console.log(this.avgData);
+//console.log(this.avgData); data(5).fill(2)
+          ///this.averageArray(10).fill(this.average);
           this.barChartData = [
-            { data: [this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average], label: 'Floating line 1' },
+            // { data: [this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average, this.average], label: 'Floating line 1' },
+            { data: Array(10).fill(this.average), label: 'Average' },
             { data: this.avgData, label: 'Step avg' },
             { data: this.graphData, label: 'Sensor1' }
           ];

@@ -59,9 +59,15 @@ export class CatsListComponent implements OnInit {
          this.graphData.length = 0;
 
          this.cats2.forEach(element => {
-          this.graphData.push(element.Id);
+          this.graphData.push(element['Id']);
+          
         });
         
+        this.barChartData =[
+          { data:this.graphData, label: 'Series A' },
+          //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+        ];
+
         this.graphData.forEach(elem => {
           console.log(elem); 
         })
