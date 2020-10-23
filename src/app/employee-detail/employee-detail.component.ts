@@ -29,6 +29,11 @@ export class EmployeeDetailComponent implements OnInit {
 
   onSelect(employee){
     this.router.navigate(['/employees',employee.id])
+    /* 
+     * Replaced the above line with the following: added relative navigation for flexibility.
+     * Basically, it sais: I don't care about the path, just add to the current route the id
+     */
+    //this.router.navigate([employee.id], {relativeTo:this.activateRoute})
   }
 
   public isSelected(employee){

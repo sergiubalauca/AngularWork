@@ -48,6 +48,15 @@ export class EmployeeListComponent implements OnInit {
   goToEmployees(){
     let selectedID = this.employeeId;
     /* Send optional route parameter with key-value pairs {} */
-    this.route1.navigate(['/employee-details', {id:selectedID, extraTestParam: "testParam"}]);
+    this.route1.navigate(['/employee-details', {id:selectedID, extraTestParam: "testPAram"}]);
+    /* 
+     * Replaced the above line with the following: added relative navigation for flexibility.
+     * Basically, it sais: I don't care about the path, just add to the current route the id
+     */
+    //this.route1.navigate(['../', {id:selectedID, extraTestPAram:"testParam"}],{relativeTo:this.route});
+  }
+  /* The child component will be displayed when button 'Go to child' is pressed, only here */
+  showChild(){
+    this.route1.navigate(['child'], {relativeTo:this.route});
   }
 }
