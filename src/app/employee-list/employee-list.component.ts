@@ -44,4 +44,10 @@ export class EmployeeListComponent implements OnInit {
     let nextId = this.employeeId + 1;
     this.route1.navigate(['/employees',nextId]);
   }
+
+  goToEmployees(){
+    let selectedID = this.employeeId;
+    /* Send optional route parameter with key-value pairs {} */
+    this.route1.navigate(['/employee-details', {id:selectedID, extraTestParam: "testParam"}]);
+  }
 }

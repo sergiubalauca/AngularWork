@@ -1,7 +1,7 @@
 <p>Employee list full</p>
 
-<ul class="bg-light text-black-60" (click) = "onSelect(employee)" *ngFor = "let employee of employees">
-    <li>
+<ul class="items">
+    <li [class.selected]="isSelected(employee)" (click) = "onSelect(employee)" *ngFor = "let employee of employees">
         <span>{{employee.id}}</span> {{employee.name}} {{employee.email}}
     </li>
 </ul>

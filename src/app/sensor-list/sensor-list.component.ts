@@ -19,7 +19,7 @@ export class SensorListComponent implements OnInit {
   public secondsCounter = interval(10000);
   public timePassed: number;
   headers = ["id", "sensor-name", "sensor-value"];
-  private graphData = [];
+  private graphData:any = [];
   private avgData = [];
   private average:number;
   private averageArray = [];
@@ -56,7 +56,6 @@ export class SensorListComponent implements OnInit {
     const subscription = this.secondsCounter.subscribe(n => {//console.log(`It's been ${n + 1} seconds since subscribing!`);
       this.timePassed = n + 100;
       this.getSensorsList();
-      //this.refreshGraph();
     });
 
   }
@@ -89,15 +88,4 @@ export class SensorListComponent implements OnInit {
          //console.log(this.graphData);
       });
   }
-
-  refreshGraph(){
-    setTimeout(() => {
-      console.log(this.barChartData);
-          //this.barChartData.chart.data.
-    
-  });
-  }
-  
-  
-
 }

@@ -1,0 +1,4 @@
+.items li.selected{
+    background-color:pink;
+    color:red;
+}

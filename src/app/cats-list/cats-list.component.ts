@@ -19,7 +19,27 @@ export class CatsListComponent implements OnInit {
   public secondsCounter = interval(10000);
   public timePassed: number;
   headers = ["Id", "Name", "Colour"];
-  public graphData = [];
+
+  public graphData:any = [];
+
+  public barChartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels: string[] = ['Read 10', 'Read 9', 'Read 8', 'Read 7', 'Read 6', 'Read 5', 'Read 4', 'Read 3', 'Read 2', 'Read 1'];
+  public barChartType: string = 'bar';
+  public barChartLegend: boolean = true;
+
+  public barChartData: any[] = [];
+
+  // events
+  public chartClicked(e: any): void {
+      //console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+      //console.log(e);
+  }
 
   constructor(private _catService: CatsService, private http: HttpClient) { }
 
@@ -46,8 +66,6 @@ export class CatsListComponent implements OnInit {
         
     });
     
-    // this.getCatsList();
-
   }
 
   getCatsList() {
@@ -68,34 +86,11 @@ export class CatsListComponent implements OnInit {
           //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
         ];
 
-        this.graphData.forEach(elem => {
-          console.log(elem); 
-        })
+        // this.graphData.forEach(elem => {
+        //   console.log(elem); 
+        // })
         
          
       });
   }
-
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
-    responsive: true
-  };
-  public barChartLabels: string[] = ['Read 10', 'Read 9', 'Read 8', 'Read 7', 'Read 6', 'Read 5', 'Read 4', 'Read 3', 'Read 2', 'Read 1'];
-  public barChartType: string = 'bar';
-  public barChartLegend: boolean = true;
-
-  public barChartData: any[] = [
-    { data:this.graphData, label: 'Series A' },
-    //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  ];
-
-  // events
-  public chartClicked(e: any): void {
-      console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-      console.log(e);
-  }
-
 }

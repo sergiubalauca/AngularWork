@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { EmployeeService } from '../employee.service';
 
 @Component({
@@ -10,10 +10,16 @@ import { EmployeeService } from '../employee.service';
 export class EmployeeDetailComponent implements OnInit {
 
   public employees = [];
+  public selectedID:number;
 
-  constructor(private _employeeService:EmployeeService, private router:Router) { }
+  constructor(private _employeeService:EmployeeService, private router:Router, private activateRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.activateRoute.paramMap.subscribe((params:ParamMap) => {
+      let id = parseInt(params.get('id'));
+      this.selectedID = id;
+    })
     /* gets called once the compoenents has been initialized
      * I am going to fetch the emplyee data here, declare the dependency mentioned in the constructor 
      */
@@ -23,6 +29,10 @@ export class EmployeeDetailComponent implements OnInit {
 
   onSelect(employee){
     this.router.navigate(['/employees',employee.id])
+  }
+
+  public isSelected(employee){
+    return employee.id === this.selectedID;
   }
 
 }
