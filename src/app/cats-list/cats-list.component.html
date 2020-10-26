@@ -2,19 +2,20 @@
 <!--<ul *ngFor="let cat of cats2">
     <li>{{cat.Id}} {{cat.Name}}</li>
 </ul>-->
-<body class="bg-img">  
-    <div class="table-responsive">
+
+<body class="bg-img">
+  <div class="table-responsive">
     <table class="table">
       <thead>
-        <th *ngFor = "let column of headers">
-            {{column}}
+        <th *ngFor="let column of headers">
+          {{column}}
         </th>
       </thead>
       <tbody>
-        <tr *ngFor = "let row of cats2">
-            <td *ngFor = "let column of headers">
-              {{row[column]}}
-            </td>
+        <tr *ngFor="let row of cats2">
+          <td *ngFor="let column of headers">
+            {{row[column]}}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -22,14 +23,9 @@
 </body>
 
 <div style="display: block">
-  <canvas baseChart
-      [datasets]="barChartData"
-      [labels]="barChartLabels"
-      [options]="barChartOptions"
-      [legend]="barChartLegend"
-      [chartType]="barChartType"
-      (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)"></canvas>
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)"></canvas>
 </div>
 
 <h3> Err is : {{errorMsg}} </h3>

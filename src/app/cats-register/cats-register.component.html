@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <h1>Cats register</h1>
+  <!-- We assign a template reference variable with a directive ngForms, we get access the the values and stuff of the form properties -->
+  <form #catsForm="ngForm">
+    {{catsForm.value | json}}
+    <br>
+    {{registerCat | json}}
+    <div ngModelGroup="createCat"> <!-- ngModelGroup pentru a genera un obiect cu proprietatile imbricate in <div> -->
+      <div class="form-group">
+        <label>Name</label>
+        <!-- inainte era doar #name, acum e #name="ngModel", ca sa am o referinta catre ngModelul form controlului, 
+        def unde pot sa iau proprietate corespunzatoare dirty/pristine etc.
+        
+        Class binding prin [class.is-invalid] = "name.invalid" ==> clasa bootstrap is-invalid va fi aplicata conditionat, daca
+        proprietatea templ ref var name.invalid = true -->
+        <input type="text"  required #name = "ngModel" [class.is-invalid] = "name.invalid && name.touched" class="form-control" name="catname" [(ngModel)]="registerCat.CatName">
+      </div>
+      {{name.valid}} <!-- Classes being applied to the input element. From these, we have the following
+        properties: touched/untouched/pristine/dirty/valid/invalid-->
+   
+      <div class = "form-group">
+        <label>Cat age</label>
+        <!-- Some basic regex in the 'pattern' used, in order to have client validation on 2 digits age -->
+        <input type="number" required #catage = "ngModel" pattern = "^(\d{2})?" 
+            [class.is-invalid] = "catage.invalid && catage.touched" class="form-control" name="catAge" [(ngModel)]="registerCat.CatAge">
+      </div>
+
+      <div class="form-group">
+        <label>Cat color</label>
+        <select class="custom-select" name="catcolor" [(ngModel)] = "registerCat.CatColor">
+          <option selected>The cat's color should be</option>
+          <option *ngFor="let color of colors">{{color}} </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Time preference</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="timePreference" value="morning" [(ngModel)] = "registerCat.timePreference">
+          <label class="form-check-label">Morning (9AM - 12PM)</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="timePreference" value="evening" [(ngModel)] = "registerCat.timePreference">
+          <label class="form-check-label">Evening (5PM - 8PM)</label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="subcribecheck" [(ngModel)] = "registerCat.subscribe">
+          <label class="form-check-label">Subscribe for more info</label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<button class="btn btn-primary">Submit</button>

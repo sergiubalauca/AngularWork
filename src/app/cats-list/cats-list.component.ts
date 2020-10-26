@@ -20,6 +20,7 @@ export class CatsListComponent implements OnInit {
   public timePassed: number;
   headers = ["Id", "Name", "Colour"];
 
+
   public graphData:any = [];
 
   public barChartOptions: any = {

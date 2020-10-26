@@ -14,6 +14,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { ChartsModule } from 'ng2-charts';
 import { ChildComponentComponent } from './child-component/child-component.component';
+import { CatsRegisterComponent } from './cats-register/cats-register.component';
 /*********** For the http calls and observables we are going to use */
 
 @NgModule({
@@ -26,7 +27,8 @@ import { ChildComponentComponent } from './child-component/child-component.compo
     CatsListComponent,
     PageNotFoundComponent,
     SensorListComponent,
-    ChildComponentComponent
+    ChildComponentComponent,
+    CatsRegisterComponent
   ],
   imports: [
     BrowserModule,
