@@ -2,19 +2,20 @@
 <!--<ul *ngFor="let cat of cats2">
     <li>{{cat.Id}} {{cat.Name}}</li>
 </ul>-->
-<body class="bg-img">  
-    <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <th *ngFor = "let column of headers">
-            {{column}}
+
+<body class="bg-img">
+  <div class="table-responsive">
+    <table class="table" striped="true">
+      <thead class="black white-text">
+        <th *ngFor="let column of headers">
+          {{column}}
         </th>
       </thead>
       <tbody>
-        <tr *ngFor = "let row of sensors">
-            <td *ngFor = "let column of headers">
-              {{row[column]}}
-            </td>
+        <tr *ngFor="let row of sensors">
+          <td *ngFor="let column of headers">
+            {{row[column]}}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -22,14 +23,8 @@
 </body>
 
 <div style="display: block">
-    <canvas baseChart
-        [datasets]="barChartData"
-        [labels]="barChartLabels"
-        [options]="barChartOptions"
-        [legend]="barChartLegend"
-        [chartType]="barChartType"
-        (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)">
-    </canvas>
-  </div>
-
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+    [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)">
+  </canvas>
+</div>
