@@ -1,12 +1,18 @@
 <div class="container-fluid">
   <h1>Cats register</h1>
   <!-- We assign a template reference variable with a directive ngForms, we get access the the values and stuff of the form properties -->
-  <form #catsForm="ngForm">
+  <form #catsForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+    <!-- Added no validate attribute to prevent browser validations kicking in when pressing submit??? -->
+    <!--
+    {{catsForm.form.valid}}
+    <br>
     {{catsForm.value | json}}
     <br>
     {{registerCat | json}}
-    <div ngModelGroup="createCat">
+    -->
+    <div ngModelGroup="request">
       <!-- ngModelGroup pentru a genera un obiect cu proprietatile imbricate in <div> -->
+      <!-- ============================= NAME ======================================== -->
       <div class="form-group">
         <label>Name</label>
         <!-- inainte era doar #name, acum e #name="ngModel", ca sa am o referinta catre ngModelul form controlului, 
@@ -19,10 +25,12 @@
         <!-- Added a simple text validation only displayed when the name has not been touched or if it is invalid -->
         <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
       </div>
-      {{name.valid}}
+      <!--{{name.valid}}-->
+      
       <!-- Classes being applied to the input element. From these, we have the following
         properties: touched/untouched/pristine/dirty/valid/invalid-->
 
+      <!-- ============================= CAT AGE ======================================== -->
       <div class="form-group">
         <label>Cat age</label>
         <!-- Some basic regex in the 'pattern' used, in order to have client validation on 2 digits age -->
@@ -30,27 +38,29 @@
           [class.is-invalid]="catage.invalid && catage.touched" class="form-control" name="catAge"
           [(ngModel)]="registerCat.CatAge">
         <!-- <small class = "text-danger" [class.d-none] = "catage.valid || catage.untouched">Age must have 2 digits</small> -->
-        <div *ngIf = "catage.errors && (catage.invalid || catage.touched)">
-          <small class = "text-danger" *ngIf = "catage.errors.required && catage.touched">Cat age is required</small>
-          <small class = "text-danger" *ngIf = "catage.errors.pattern">Cat age must have two digits</small>
+        <div *ngIf="catage.errors && (catage.invalid || catage.touched)">
+          <small class="text-danger" *ngIf="catage.errors.required && catage.touched">Cat age is required</small>
+          <small class="text-danger" *ngIf="catage.errors.pattern">Cat age must have two digits</small>
         </div>
       </div>
 
+      <!-- ============================= CAT COLOR ======================================== -->
       <div class="form-group">
         <label>Cat color</label>
         <!-- We are going to listen on the blur and change event handlers, to validate the changing of the selected item -->
-        <select (blur) = "validateCatColor(catcolor.value)" (change) = "validateCatColor(catcolor.value)"
-                required #catcolor = "ngModel" 
-                [class.is-invalid] = "catColorHasError && catcolor.touched" 
-                class="custom-select" name="catcolor" [(ngModel)]="registerCat.CatColor">
-          <option value = "default" >The cat's color should be</option>
+        <select (blur)="validateCatColor(catcolor.value)" (change)="validateCatColor(catcolor.value)" required
+          #catcolor="ngModel" [class.is-invalid]="catColorHasError && catcolor.touched" class="custom-select"
+          name="catcolor" [(ngModel)]="registerCat.CatColor">
+          <option value="default">The cat's color should be</option>
           <option *ngFor="let color of colors">{{color}} </option>
         </select>
-        <small class = "text-danger" [class.d-none] = "!catColorHasError || catcolor.untouched">Please choose a color</small>
+        <small class="text-danger" [class.d-none]="!catColorHasError || catcolor.untouched">Please choose a
+          color</small>
       </div>
 
+      <!-- ============================= SCHEDULE PREFERENCE  ======================================== -->
       <div class="mb-3">
-        <label>Time preference</label>
+        <label>Vet schedule preference</label>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="timePreference" value="morning"
             [(ngModel)]="registerCat.timePreference">
@@ -63,13 +73,18 @@
           <label class="form-check-label">Evening (5PM - 8PM)</label>
         </div>
 
+        <!-- ============================= SUBCRIBE ======================================== -->
         <div class="form-check">
           <input class="form-check-input" type="checkbox" name="subcribecheck" [(ngModel)]="registerCat.subscribe">
           <label class="form-check-label">Subscribe for more info</label>
         </div>
       </div>
     </div>
+
+    <!-- Add the disabled property to the Submit button and bind it to the 'valid' property of the entire form.
+     However, since we have a custom validation on the cat color, then we can add || catColorHasError.
+     The button needs to be inside the form tag so that the ngSubmit will work -->
+    <button [disabled]="catsForm.form.invalid || catColorHasError" class="btn btn-primary">Submit</button>
+
   </form>
 </div>
-
-<button class="btn btn-primary">Submit</button>

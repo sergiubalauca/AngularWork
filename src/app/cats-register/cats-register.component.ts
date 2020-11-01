@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CatsService } from '../cats.service';
 import { RegisterCat } from '../register-cat';
 
 @Component({
@@ -14,10 +15,15 @@ export class CatsRegisterComponent implements OnInit {
   public catname = "";
   /* Declare a variable of type RegisterCat, in order to instantiate it with data from the template */
   registerCat = new RegisterCat('', 'default', null, 'evening', true);
+  
+  
+  //registerCatPostI = new ICatServiceResponsePost
+  //registerCatPostInterface = new ICatServiceResponsePost
 
   catColorHasError = true;
 
-  constructor() { }
+  /* Subscribed to the CatService service, so that I can post and read the returned Observable */
+  constructor(private _enrollmentService: CatsService) { }
 
   validateCatColor(value) {
     if (value === 'default')
@@ -26,7 +32,25 @@ export class CatsRegisterComponent implements OnInit {
       this.catColorHasError = false;
   }
 
+  onSubmit(){
+    //console.log(this.registerCat);
+    this._enrollmentService.createEmptyUser(this.registerCat.CatName, this.registerCat.CatColor);
+    this._enrollmentService.enroll(this.registerCat)
+      .subscribe(
+        data => console.log("Succes!", data),
+        error => console.log("Error!", error)
+      )
+      
+
+    // this._enrollmentService.postCat(this.registerCat)
+    // .subscribe(
+    //   data => console.log("Succes!", data),
+    //   error => console.log("Error!", error)
+    // )
+  }
+
   ngOnInit(): void {
+    
   }
 
 }
