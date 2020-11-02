@@ -56,7 +56,7 @@ export class CatsService {
   getCats2() {
     return this.http.get(this._urlEmea).
       pipe(map((result: ICatServiceResponse) => {
-        console.log(result);
+        //console.log(result);
         return result.response.getCat.getCat;
       })
         // map((cat: Cats[]) => {
@@ -75,18 +75,19 @@ export class CatsService {
     return this.postModel;
   }
 
-  enroll(cat: RegisterCat) {
+  enroll(cat: RegisterCat):Observable<RegisterCat> {
     
     return this.http.post(this._urlEmea, this.postModel).
       pipe(map((result: any) => {
-        console.log(result);
+        //console.log(result);
+        return result;
       })
         // map((cat: Cats[]) => {
         //   return cat;
         // }), catchError(error => {
         //   return throwError('Something went wrong!');
         // })
-      );
+      ).pipe((catchError(this.errorHandler)));;
   }
 
   errorHandler(error: HttpErrorResponse) {

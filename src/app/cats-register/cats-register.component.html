@@ -1,5 +1,9 @@
 <div class="container-fluid">
   <h1>Cats register</h1>
+
+  <!-- Added a basic alert message displaying the error message coming from the server -->
+  <div class = "alert alert-danger" *ngIf = "serverErrorMessage">{{serverErrorMessage}}</div>
+  
   <!-- We assign a template reference variable with a directive ngForms, we get access the the values and stuff of the form properties -->
   <form #catsForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
     <!-- Added no validate attribute to prevent browser validations kicking in when pressing submit??? -->
