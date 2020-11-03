@@ -76,8 +76,9 @@ export class CatsService {
   }
 
   enroll(cat: RegisterCat):Observable<RegisterCat> {
-    
-    return this.http.post(this._urlEmea, this.postModel).
+    const requestBody = {request:{catName:cat.CatName, colour:cat.CatColor}};
+    console.log(requestBody);
+    return this.http.post(this._urlEmea, requestBody).
       pipe(map((result: any) => {
         //console.log(result);
         return result;

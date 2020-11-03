@@ -14,14 +14,15 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 export class CatsListComponent implements OnInit {
 
   public cats = [];
-  public cats2 =[];
+  public cats2 = [];
   public errorMsg: any;
   public secondsCounter = interval(10000);
   public timePassed: number;
   headers = ["Id", "Name", "Colour"];
 
+  public subscription: Subscription;
 
-  public graphData:any = [];
+  public graphData: any = [];
 
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -35,11 +36,11 @@ export class CatsListComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-      //console.log(e);
+    //console.log(e);
   }
 
   public chartHovered(e: any): void {
-      //console.log(e);
+    //console.log(e);
   }
 
   constructor(private _catService: CatsService, private http: HttpClient) { }
@@ -61,12 +62,15 @@ export class CatsListComponent implements OnInit {
     this.getCatsList();
 
     // Subscribe to begin publishing values
-    const subscription = this.secondsCounter.subscribe(n => {//console.log(`It's been ${n + 1} seconds since subscribing!`);
+    this.subscription = this.secondsCounter.subscribe(n => {//console.log(`It's been ${n + 1} seconds since subscribing!`);
       this.timePassed = n + 100;
-      this.getCatsList();   
-        
-    });
-    
+      this.getCatsList();
+    },);
+
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
   getCatsList() {
@@ -74,24 +78,24 @@ export class CatsListComponent implements OnInit {
       .getCats2()
       .subscribe((data: any) => {
         console.log("Retrieving cats...");
-         this.cats2 = data;
-         this.graphData.length = 0;
+        this.cats2 = data;
+        this.graphData.length = 0;
 
-         this.cats2.forEach(element => {
+        this.cats2.forEach(element => {
           this.graphData.push(element['Id']);
-          
+
         });
-        
-        this.barChartData =[
-          { data:this.graphData, label: 'Series A' },
+
+        this.barChartData = [
+          { data: this.graphData, label: 'Series A' },
           //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
         ];
 
         // this.graphData.forEach(elem => {
         //   console.log(elem); 
         // })
-        
-         
+
+
       });
   }
 }
