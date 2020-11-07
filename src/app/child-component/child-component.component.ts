@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
@@ -16,23 +16,20 @@ export class ChildComponentComponent implements OnInit {
   serverErrorMessage = '';
   registerEmployee = new Employee(null,"", "", "", null);
 
-  constructor(private employeeService: EmployeeService, private route: ActivatedRoute) { }
+  constructor(private employeeService: EmployeeService, private rout: Router, private route: ActivatedRoute) { }
 
   onSubmit() {
-    //console.log(this.registerCat);
+    
     this.employeeService.updateEmployee(this.registerEmployee)
       .subscribe(
         data => console.log("Succes!", data),
-        //error => console.log("Error!", error),
+        
         error => this.serverErrorMessage = error
 
       )
 
-    // this._enrollmentService.postCat(this.registerCat)
-    // .subscribe(
-    //   data => console.log("Succes!", data),
-    //   error => console.log("Error!", error)
-    // )
+    if (this.serverErrorMessage == '')
+    this.rout.navigate(['/employee-details/']);
   }
 
   /* Get the employee for the editing section */
