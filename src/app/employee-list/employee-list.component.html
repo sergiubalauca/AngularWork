@@ -5,9 +5,12 @@
 <div class="divider"></div>
 <button (click) = "goToEmployees()">Back</button>
 <div class="divider"></div>
-<button (click) = "showChild()">Go to child</button>
+<button (click) = "showChild()">Edit</button>
+<div class="divider"></div>
+<button (click) = "deleteEmployee()">Delete</button>
 <!-- Added router-outlet, so that I can navigate to the child componenet, so see it as an overview -->
 <router-outlet></router-outlet>
+
 
 <p>Employee list names</p>
 <ul *ngFor = "let employee of employees; let i = index">

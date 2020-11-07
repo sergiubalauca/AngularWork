@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IEmployee } from './employee';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Employee, IEmployee } from './employee';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 /* In case we want to inject a service into this service - required only for a service */
 @Injectable({
@@ -23,4 +24,32 @@ export class EmployeeService {
 
     return this.http.get<IEmployee[]>(this._url);
   }
+
+  getEmployee(id:number):Observable<Employee>{
+    //console.log("id:" + id);
+    return this.http.get<Employee>(this._url + id).pipe((catchError(this.errorHandler)));
+    
+  }
+
+  updateEmployee(employee: Employee){
+    const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
+    console.log(requestBody);
+    return this.http.put(this._url + requestBody.id, requestBody).pipe((catchError(this.errorHandler)));
+  }
+
+  deleteEmployee(id:number):Observable<IEmployee[]>{
+    return this.http.delete<any>(this._url + "413");
+  }
+
+  enroll(employee: Employee){
+    const requestBody = {name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
+    console.log(requestBody);
+    return this.http.post(this._url, requestBody);
+  }
+
+  errorHandler(error: HttpErrorResponse) {
+    console.log(error.message || "Server error");
+    return throwError(error.message || "Server error");
+  }
+
 }

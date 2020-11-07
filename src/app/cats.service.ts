@@ -88,7 +88,7 @@ export class CatsService {
         // }), catchError(error => {
         //   return throwError('Something went wrong!');
         // })
-      ).pipe((catchError(this.errorHandler)));;
+      ).pipe((catchError(this.errorHandler)));
   }
 
   errorHandler(error: HttpErrorResponse) {

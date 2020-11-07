@@ -13,7 +13,8 @@ export class EmployeeListComponent implements OnInit {
 
   public employees  = [];
   public employeeId:number;
-
+  
+  
   constructor(private _employeeService:EmployeeService, private route1:Router, private route:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -57,6 +58,12 @@ export class EmployeeListComponent implements OnInit {
   }
   /* The child component will be displayed when button 'Go to child' is pressed, only here */
   showChild(){
-    this.route1.navigate(['child'], {relativeTo:this.route});
+    let selectedID = this.employeeId;
+    this.route1.navigate(['child', {id:selectedID}], {relativeTo:this.route});
+  }
+
+  deleteEmployee(){
+    this._employeeService.deleteEmployee(1)
+        .subscribe(data => this.employees = data);
   }
 }

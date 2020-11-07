@@ -1,1 +1,54 @@
-<p>child-component works!</p>
+<div class="container-fluid">
+    <h1>Edit employee</h1>
+
+    <!-- Added a basic alert message displaying the error message coming from the server -->
+    <div class="alert alert-danger" *ngIf="serverErrorMessage">{{serverErrorMessage}}</div>
+
+    <!-- We assign a template reference variable with a directive ngForms, we get access the the values and stuff of the form properties -->
+    <form #employeesForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Added no validate attribute to prevent browser validations kicking in when pressing submit??? -->
+
+        {{employeesForm.form.valid}}
+        <br>
+        {{employeesForm.value | json}}
+        <br>
+        {{registerEmployee | json}}
+
+        <div ngModelGroup="FormObject">
+            <!-- ============================= NAME ======================================== -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" required #name="ngModel" [class.is-invalid]="name.invalid && name.touched"
+                    class="form-control" name="employeename" [(ngModel)]="registerEmployee.name">
+                <small class="text-danger" [class.d-none]="name.valid || name.untouched">Name is required</small>
+            </div>
+            <!-- ============================= EMAIL ======================================== -->
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched"
+                    class="form-control" name="employeeemail" [(ngModel)]="registerEmployee.email">
+                <small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+            </div>
+            <!-- ============================= BIRTHDATE ======================================== -->
+            <div class="form-group">
+                <label>Birthdate</label>
+                <input type="text" required #birthdate="ngModel" [class.is-invalid]="birthdate.invalid && birthdate.touched"
+                    class="form-control" name="birthdate" [(ngModel)]="registerEmployee.birthdate">
+                <small class="text-danger" [class.d-none]="birthdate.valid || birthdate.untouched">Birthdate is required</small>
+            </div>
+            <!-- ============================= GroupID ======================================== -->
+            <div class="form-group">
+                <label>groupId</label>
+                <input type="number" required #groupId="ngModel" [class.is-invalid]="groupId.invalid && groupId.touched"
+                    class="form-control" name="groupId" [(ngModel)]="registerEmployee.groupId">
+                <small class="text-danger" [class.d-none]="groupId.valid || groupId.untouched">groupId is required</small>
+            </div>
+        </div>
+
+        <!-- Add the disabled property to the Submit button and bind it to the 'valid' property of the entire form.
+       However, since we have a custom validation on the cat color, then we can add || catColorHasError.
+       The button needs to be inside the form tag so that the ngSubmit will work -->
+        <button [disabled]="employeesForm.form.invalid" class="btn btn-primary">Submit</button>
+
+    </form>
+</div>
