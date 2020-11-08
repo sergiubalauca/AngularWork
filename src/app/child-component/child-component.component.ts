@@ -11,50 +11,68 @@ import { EmployeeService } from '../employee.service';
 })
 export class ChildComponentComponent implements OnInit {
 
+  public id: number;
   employee = {};
   public subscription: Subscription;
   serverErrorMessage = '';
-  registerEmployee = new Employee(null,"", "", "", null);
+  registerEmployee = new Employee(null, "", "", "", null);
 
   constructor(private employeeService: EmployeeService, private rout: Router, private route: ActivatedRoute) { }
 
   onSubmit() {
-    
-    this.employeeService.updateEmployee(this.registerEmployee)
-      .subscribe(
-        data => console.log("Succes!", data),
-        
-        error => this.serverErrorMessage = error
+    if (!isNaN(this.id)) {
+      /* === Update mode === */
+      this.employeeService.updateEmployee(this.registerEmployee)
+        .subscribe(
+          data => console.log("Succes!", data),
 
-      )
+          error => this.serverErrorMessage = error
 
-    if (this.serverErrorMessage == '')
-    this.rout.navigate(['/employee-details/']);
+        )
+
+      if (this.serverErrorMessage == '')
+        this.rout.navigate(['/employee-details/']);
+    }
+    /* === Create mode === */
+    else {
+      this.employeeService.addEmployee(this.registerEmployee)
+        .subscribe(
+          data => console.log("Succes!", data),
+          error => this.serverErrorMessage = error
+        )
+
+        if (this.serverErrorMessage == '')
+        this.rout.navigate(['/employee-details/']);
+    }
   }
 
   /* Get the employee for the editing section */
   ngOnInit(): void {
-    let id = parseInt(this.route.snapshot.paramMap.get('id'));
-    //console.log(id);
+    this.id = parseInt(this.route.snapshot.paramMap.get('id'));
+    //console.log(this.id);
+    if (!isNaN(this.id)) {
+      this.subscription = this.employeeService.getEmployee(this.id)
+        .subscribe(data => {
+          this.employee = data;
+          //console.log(this.employee);
 
-    this.subscription = this.employeeService.getEmployee(id)
-      .subscribe(data => {
-        this.employee = data;
-        //console.log(this.employee);
-        
-        /* Update the binded object to the template */
-        this.registerEmployee.id =data.id;
-        this.registerEmployee.name = data.name;
-        this.registerEmployee.email = data.email;
-        this.registerEmployee.birthdate = data.birthdate;
-        this.registerEmployee.groupId = data.groupId;
-      });
+          /* Update the binded object to the template */
+          this.registerEmployee.id = data.id;
+          this.registerEmployee.name = data.name;
+          this.registerEmployee.email = data.email;
+          this.registerEmployee.birthdate = data.birthdate;
+          this.registerEmployee.groupId = data.groupId;
+        });
+    }
+    else {
 
+    }
     //console.log(this.employee); // this is empty!! interesting lifecycle
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe()
+    if (!isNaN(this.id))
+      this.subscription.unsubscribe();
   }
 
 }
