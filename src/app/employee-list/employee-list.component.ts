@@ -3,6 +3,7 @@ import { EmployeeService } from '../employee.service';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import { Router } from '@angular/router';
 import {ParamMap} from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: '[app-employee-list]',
@@ -13,7 +14,7 @@ export class EmployeeListComponent implements OnInit {
 
   public employees  = [];
   public employeeId:number;
-  
+  public subscription: Subscription;
   
   constructor(private _employeeService:EmployeeService, private route1:Router, private route:ActivatedRoute) { }
 
@@ -21,8 +22,9 @@ export class EmployeeListComponent implements OnInit {
     /* gets called once the compoenents has been initialized
      * I am going to fetch the emplyee data here, declare the dependency mentioned in the constructor 
      */
-    this._employeeService.getEmployees()
-        .subscribe(data => this.employees = data); /* assign the data  received from the observable to the local employees property */
+    this.subscription = this._employeeService.getEmployees()
+        .subscribe(data => this.employees = data); 
+    /* assign the data  received from the observable to the local employees property */
     /* we read the route parameter: from the route, we get the snapshot of the courrent route, getting the param from the url 
      * BUT if we navigate from this componenet to the same one, it will not work using snapshot - navigatenext, prev.
      * Angular just reuses the compoenent and not initialises the page.
@@ -33,7 +35,6 @@ export class EmployeeListComponent implements OnInit {
       let id = parseInt(params.get('id'));
       this.employeeId = id;
     })
-    
   }
 
   goPrevious(){
@@ -70,5 +71,9 @@ export class EmployeeListComponent implements OnInit {
   deleteEmployee(){
     this._employeeService.deleteEmployee(this.employeeId)
         .subscribe(data => console.log(data));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 }

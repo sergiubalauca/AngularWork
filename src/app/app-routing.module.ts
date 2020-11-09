@@ -25,7 +25,7 @@ const routes: Routes = [
     children:[
       {path:'child', component:ChildComponentComponent}
     ]},
-  {path:'employee-details', component: EmployeeDetailComponent},
+  {path:'employee-details', component: EmployeeDetailComponent, runGuardsAndResolvers: 'always'},
   {path:'cats', component: CatsListComponent},
   {path:'cats-register', component: CatsRegisterComponent},
   {path:'sensors', component: SensorListComponent},
@@ -33,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
