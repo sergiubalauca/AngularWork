@@ -22,18 +22,26 @@ export class EmployeeService {
       {"id": 4, "name": "Elena", "age": 28}
     ];*/
     
-    return this.http.get<IEmployee[]>(this._url);
+    return this.http.get<IEmployee[]>(this._url).pipe((catchError(this.errorHandler)));
   }
 
   getEmployee(id:number):Observable<Employee>{
-    console.log("id:" + id);
+    //console.log("id:" + id);
+    // const observable = new Observable((subscriber) => {
+    //   subscriber.next("initial hi")
+    //   const id = setInterval(() => {
+    //     subscriber.next('hi1')
+    //     subscriber.next('this.http.get<Employee>(this._url + id)')
+    //   }, 1000);
+    // });
+
+    // observable.subscribe(x => {console.log(x)});
     return this.http.get<Employee>(this._url + id).pipe((catchError(this.errorHandler)));
-    
   }
 
   updateEmployee(employee: Employee){
     const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
-    console.log(requestBody);
+    //console.log(requestBody);
     return this.http.put(this._url + requestBody.id, requestBody).pipe((catchError(this.errorHandler)));
   }
 
@@ -43,7 +51,7 @@ export class EmployeeService {
 
   addEmployee(employee: Employee){
     const requestBody = {name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
-    console.log("I am sending: " + requestBody);
+    //console.log("I am sending: " + requestBody);
     return this.http.post(this._url, requestBody).pipe((catchError(this.errorHandler)));
   }
 

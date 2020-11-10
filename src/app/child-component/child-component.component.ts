@@ -24,7 +24,7 @@ export class ChildComponentComponent implements OnInit {
       /* === Update mode === */
       this.employeeService.updateEmployee(this.registerEmployee)
         .subscribe(
-          data => console.log("Succes!", data),
+          data => console.log("Successfully update employee!"),
 
           error => this.serverErrorMessage = error
 
