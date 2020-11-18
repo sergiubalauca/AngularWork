@@ -15,6 +15,9 @@ import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { ChartsModule } from 'ng2-charts';
 import { ChildComponentComponent } from './child-component/child-component.component';
 import { CatsRegisterComponent } from './cats-register/cats-register.component';
+import { CatsService } from './cats.service';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,7 +31,8 @@ import { CatsRegisterComponent } from './cats-register/cats-register.component';
     PageNotFoundComponent,
     SensorListComponent,
     ChildComponentComponent,
-    CatsRegisterComponent
+    CatsRegisterComponent,
+    ReactiveFormComponent
   ],
   imports: [
     BrowserModule,
@@ -38,9 +42,10 @@ import { CatsRegisterComponent } from './cats-register/cats-register.component';
      * we are using it in employee.service.ts as private http:HttpClient in the constructor 
      */
     HttpClientModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule
   ],
-  providers: [EmployeeService], /* Registered (linked) the service at module level, in order for it to be
+  providers: [EmployeeService, CatsService], /* Registered (linked) the service at module level, in order for it to be
                                  * available for all the sub hierarchy classes and components - step 2 for using a service
                                  */
   bootstrap: [AppComponent]

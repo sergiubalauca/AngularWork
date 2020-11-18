@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EmployeeService {
+  
   private _url: string = "https://localhost:44348/api/Students/";
   
   constructor(private http:HttpClient) { }
@@ -41,7 +42,7 @@ export class EmployeeService {
 
   updateEmployee(employee: Employee){
     const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
-    //console.log(requestBody);
+    console.log(requestBody);
     return this.http.put(this._url + requestBody.id, requestBody).pipe((catchError(this.errorHandler)));
   }
 

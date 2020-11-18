@@ -63,6 +63,11 @@ export class EmployeeListComponent implements OnInit {
     this.route1.navigate(['child', {id:selectedID}], {relativeTo:this.route});
   }
 
+  reactiveEmployeeEdit(){
+    let selectedID = this.employeeId;
+    this.route1.navigate(['reactive-form', {id:selectedID}], {relativeTo:this.route});
+  }
+
   addEmployee(){
     let selectedID = this.employeeId;
     this.route1.navigate(['child'], {relativeTo:this.route});
@@ -71,6 +76,7 @@ export class EmployeeListComponent implements OnInit {
   deleteEmployee(){
     this._employeeService.deleteEmployee(this.employeeId)
         .subscribe(data => console.log(data));
+        //this.route1.navigate(['/employee-details/']);
   }
 
   ngOnDestroy() {

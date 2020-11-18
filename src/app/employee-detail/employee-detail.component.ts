@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
+import { pipe } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { delay, startWith } from 'rxjs/operators';
 import { EmployeeService } from '../employee.service';
+
+const CACHE_KEY = 'httpEmplCache';
 
 @Component({
   selector: '[app-employee-detail]',
@@ -17,12 +21,13 @@ export class EmployeeDetailComponent implements OnInit {
   public subscription1: Subscription;
   public subscription2: Subscription;
   public navigationSubscription: Subscription;
-
+  
   constructor(private _employeeService: EmployeeService, private router: Router, private activateRoute: ActivatedRoute) {
     /* This is for refreshing the content on the page - reacts on NavigationEnd of the router and gets the data again  */
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
+        console.log("navigated back here :)");
         this.initialiseInvites();
       }
     });
@@ -46,13 +51,21 @@ export class EmployeeDetailComponent implements OnInit {
     const observer = {
       next: x => {
         console.log('Observer got a next value');
-        x => this.employees = x
+        x => this.employees = x;
+        /* Stored the data in the local browser storage */
+        localStorage[CACHE_KEY] = JSON.stringify(x); 
+        x => x.pipe(
+             startWith(JSON.parse(localStorage[CACHE_KEY] || '[]')));
       },
       error: err => console.error('Observer got an error: ' + err),
       complete: () => console.log('Observer got a complete notification'),
     };
 
     this.subscription1 = this._employeeService.getEmployees().subscribe(observer);
+    
+    // this._employeeService.getEmployees().pipe(
+    //   startWith(JSON.parse(localStorage[CACHE_KEY] || '[]'))
+    // )
 
     const subject = new Subject<number>();
 
@@ -104,15 +117,15 @@ export class EmployeeDetailComponent implements OnInit {
     // Set default values and re-fetch any data you need.
     //console.log("new stuff");
     this.subscription2 = this._employeeService.getEmployees()
-      .subscribe(data => this.employees = data);
+      .subscribe(data => {this.employees = data});
     /* We can add a subscription into another and unsubscribe all of them at once */
     //this.subscription1.add(this.subscription2);
   }
 
   ngOnDestroy() {
-    this.subscription1.unsubscribe();
-    this.subscription2.unsubscribe();
-    this.navigationSubscription.unsubscribe();
+    // this.subscription1.unsubscribe();
+    // this.subscription2.unsubscribe();
+    // this.navigationSubscription.unsubscribe();
   }
 
 }

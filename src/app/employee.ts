@@ -4,10 +4,10 @@
 export interface IEmployee {
     id: number,
     name: string,
-    email: number
+    email: string,
 }
 
-export class Employee {
+export class Employee implements IEmployee{
     id: number
     name: string;
     email: string;

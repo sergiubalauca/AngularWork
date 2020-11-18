@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/internal/operators/delay';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 
@@ -14,6 +15,9 @@ export class ChildComponentComponent implements OnInit {
   public id: number;
   employee = {};
   public subscription: Subscription;
+  private subscriptionUpdate: Subscription;
+  private subscriptionCreate: Subscription;
+
   serverErrorMessage = '';
   registerEmployee = new Employee(null, "", "", "", null);
 
@@ -22,26 +26,25 @@ export class ChildComponentComponent implements OnInit {
   onSubmit() {
     if (!isNaN(this.id)) {
       /* === Update mode === */
-      this.employeeService.updateEmployee(this.registerEmployee)
+
+      this.subscriptionUpdate = this.employeeService.updateEmployee(this.registerEmployee)
         .subscribe(
-          data => console.log("Successfully update employee!"),
-
+          data => console.log("Successfully updated employee!"),
           error => this.serverErrorMessage = error
-
         )
-
+      //delay(1);
       if (this.serverErrorMessage == '')
         this.rout.navigate(['/employee-details/']);
     }
     /* === Create mode === */
     else {
-      this.employeeService.addEmployee(this.registerEmployee)
+      this.subscriptionCreate = this.employeeService.addEmployee(this.registerEmployee)
         .subscribe(
           data => console.log("Succes!", data),
           error => this.serverErrorMessage = error
         )
 
-        if (this.serverErrorMessage == '')
+      if (this.serverErrorMessage == '')
         this.rout.navigate(['/employee-details/']);
     }
   }
@@ -73,6 +76,13 @@ export class ChildComponentComponent implements OnInit {
   ngOnDestroy() {
     if (!isNaN(this.id))
       this.subscription.unsubscribe();
+
+    // if (!isNaN(this.id))
+    //   //console.log("unsubscribing from update")
+    //   this.subscriptionUpdate.unsubscribe();
+    // else if (isNaN(this.id))
+    // //console.log("unsubscribing from create")
+    //   this.subscriptionCreate.unsubscribe();
   }
 
 }

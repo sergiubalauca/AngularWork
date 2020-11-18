@@ -6,6 +6,7 @@ import { ChildComponentComponent } from './child-component/child-component.compo
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { TestComponent } from './test/test.component';
 
@@ -23,7 +24,8 @@ const routes: Routes = [
     component:EmployeeListComponent,
     /* Added child routes */
     children:[
-      {path:'child', component:ChildComponentComponent}
+      {path:'child', component:ChildComponentComponent},
+      {path:'reactive-form', component:ReactiveFormComponent}
     ]},
   {path:'employee-details', component: EmployeeDetailComponent, runGuardsAndResolvers: 'always'},
   {path:'cats', component: CatsListComponent},
@@ -43,4 +45,5 @@ export const routingComponents = [EmployeeListComponent,
                                   CatsRegisterComponent, 
                                   SensorListComponent,
                                   PageNotFoundComponent,
-                                  ChildComponentComponent];
+                                  ChildComponentComponent,
+                                  ReactiveFormComponent];
