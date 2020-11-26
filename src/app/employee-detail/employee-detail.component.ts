@@ -61,7 +61,7 @@ export class EmployeeDetailComponent implements OnInit {
       complete: () => console.log('Observer got a complete notification'),
     };
 
-    this.subscription1 = this._employeeService.getEmployees().subscribe(observer);
+    //this.subscription1 = this._employeeService.getEmployees().subscribe(observer);
     
     // this._employeeService.getEmployees().pipe(
     //   startWith(JSON.parse(localStorage[CACHE_KEY] || '[]'))
@@ -124,7 +124,7 @@ export class EmployeeDetailComponent implements OnInit {
 
   ngOnDestroy() {
     // this.subscription1.unsubscribe();
-    // this.subscription2.unsubscribe();
+     this.subscription2.unsubscribe();
     // this.navigationSubscription.unsubscribe();
   }
 

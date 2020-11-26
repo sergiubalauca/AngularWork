@@ -41,8 +41,9 @@ export class EmployeeService {
   }
 
   updateEmployee(employee: Employee){
-    const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
-    console.log(requestBody);
+    const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId, addressID:employee.addressID};
+    //console.log(requestBody);
+    //console.log(employee);
     return this.http.put(this._url + requestBody.id, requestBody).pipe((catchError(this.errorHandler)));
   }
 
@@ -51,7 +52,7 @@ export class EmployeeService {
   }
 
   addEmployee(employee: Employee){
-    const requestBody = {name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId};
+    const requestBody = {name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId, addressID:employee.addressID};
     //console.log("I am sending: " + requestBody);
     return this.http.post(this._url, requestBody).pipe((catchError(this.errorHandler)));
   }

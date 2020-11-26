@@ -65,7 +65,9 @@ export class EmployeeListComponent implements OnInit {
 
   reactiveEmployeeEdit(){
     let selectedID = this.employeeId;
-    this.route1.navigate(['reactive-form', {id:selectedID}], {relativeTo:this.route});
+    let addressID  = 2;
+
+    this.route1.navigate(['reactive-form', {id:selectedID,adrsID:addressID}], {relativeTo:this.route});
   }
 
   addEmployee(){

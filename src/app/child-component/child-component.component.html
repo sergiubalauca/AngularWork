@@ -43,6 +43,13 @@
                     class="form-control" name="groupId" [(ngModel)]="registerEmployee.groupId">
                 <small class="text-danger" [class.d-none]="groupId.valid || groupId.untouched">groupId is required</small>
             </div>
+            <!-- ============================= AddressID ======================================== -->
+            <div class="form-group">
+                <label>AddressID</label>
+                <input type="number" required #AddressID="ngModel" [class.is-invalid]="AddressID.invalid && AddressID.touched"
+                    class="form-control" name="AddressID" [(ngModel)]="registerEmployee.addressID">
+                <small class="text-danger" [class.d-none]="AddressID.valid || AddressID.untouched">AddressID is required</small>
+            </div>
         </div>
 
         <!-- Add the disabled property to the Submit button and bind it to the 'valid' property of the entire form.

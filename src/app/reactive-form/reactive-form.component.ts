@@ -1,8 +1,13 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+/* 
+ * Also imported FormBuilder for not creating multiple form instances manually. 
+ * Imported Validator class for managing the validations for the form.
+ */
+import { FormControl, FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AddressService } from '../address.service';
 import { EmployeeService } from '../employee.service';
 
 @Component({
@@ -12,10 +17,24 @@ import { EmployeeService } from '../employee.service';
 })
 export class ReactiveFormComponent implements OnInit {
   private id: number;
+  private addressID: number;
   private subscription: Subscription;
+  private subscriptionAddresses: Subscription;
+
+
+  constructor(private employeeService: EmployeeService,
+    private addressService: AddressService,
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder) { }
+
+  /* A getter for retrieving the name value, in order to use it in the template */
+  get studentName() {
+    return this.registrationForm.get('name');
+  }
 
   /* We initialize a new FormGroup object with the FormControls from the html as input in the constructor */
-  registrationForm = new FormGroup({
+  registrationForm0 = new FormGroup({
     name: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
@@ -27,23 +46,47 @@ export class ReactiveFormComponent implements OnInit {
     })
   });
 
-  constructor(private employeeService: EmployeeService,
-    private route: Router,
-    private activatedRoute: ActivatedRoute) { }
+  /* 2nd way of doing it by using an injected service of type FormBuilder, so no need for new instances of FormControl/Group */
+  registrationForm = this.fb.group({
+    /* Applied the required validators rule for this field as second argument.
+     * For multiple validations applied, we use an array
+     */
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    password: [''],
+    confirmPassword: [''],
+    address: this.fb.group({
+      city: [''],
+      state: [''],
+      postalCode: ['']
+    })
+  })
 
   ngOnInit(): void {
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.addressID = parseInt(this.activatedRoute.snapshot.paramMap.get('adrsID'));
     //console.log(this.id);
     if (!isNaN(this.id)) {
       this.subscription = this.employeeService.getEmployee(this.id)
         .subscribe(data => {
-          console.log(data.name)
+          //console.log(data.name)
           /* Update the binded object to the template by using patchValue for assigning just a couple of fields.
            * To assign them all, we use setValue() 
            */
           this.registrationForm.patchValue({
             name: data.name
           })
+
+          this.subscriptionAddresses = this.addressService.getAddress(data.addressID)
+            .subscribe(data => {
+              console.log(data);
+              this.registrationForm.patchValue({
+                address: {
+                  city: data.city,
+                  state: data.state,
+                  postalCode: data.postalCode
+                }
+              })
+            })
         })
     }
   }
@@ -61,5 +104,9 @@ export class ReactiveFormComponent implements OnInit {
           })
         });
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -19,7 +19,7 @@ export class ChildComponentComponent implements OnInit {
   private subscriptionCreate: Subscription;
 
   serverErrorMessage = '';
-  registerEmployee = new Employee(null, "", "", "", null);
+  registerEmployee = new Employee(null, "", "", "", null, null);
 
   constructor(private employeeService: EmployeeService, private rout: Router, private route: ActivatedRoute) { }
 
@@ -65,6 +65,7 @@ export class ChildComponentComponent implements OnInit {
           this.registerEmployee.email = data.email;
           this.registerEmployee.birthdate = data.birthdate;
           this.registerEmployee.groupId = data.groupId;
+          this.registerEmployee.addressID = data.addressID;
         });
     }
     else {

@@ -13,11 +13,13 @@ export class Employee implements IEmployee{
     email: string;
     birthdate: string;
     groupId: string;
-    constructor(id: number, name: string, email: string, birthdate: string, groupId: string) {
+    addressID: number;
+    constructor(id: number, name: string, email: string, birthdate: string, groupId: string, addressID:number) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.birthdate = birthdate;
         this.groupId = groupId;
+        this.addressID = addressID;
     }
 }
