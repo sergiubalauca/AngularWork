@@ -61,7 +61,7 @@ export class EmployeeDetailComponent implements OnInit {
       complete: () => console.log('Observer got a complete notification'),
     };
 
-    //this.subscription1 = this._employeeService.getEmployees().subscribe(observer);
+    //this.subscription1 = this._employeeService.getEmployees().subscribe(observer => {this.employees = observer});
     
     // this._employeeService.getEmployees().pipe(
     //   startWith(JSON.parse(localStorage[CACHE_KEY] || '[]'))

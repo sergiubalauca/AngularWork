@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressService } from '../address.service';
 import { EmployeeService } from '../employee.service';
+import { forbiddenNameValidator, forbiddenNameValidator2 } from '../shared/name.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -51,7 +52,7 @@ export class ReactiveFormComponent implements OnInit {
     /* Applied the required validators rule for this field as second argument.
      * For multiple validations applied, we use an array
      */
-    name: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator2(/password/)]],
     password: [''],
     confirmPassword: [''],
     address: this.fb.group({

@@ -18,6 +18,7 @@
             <div *ngIf = "studentName.invalid && studentName.touched">
                 <small *ngIf = "studentName.errors?.required" class = "text-danger">Name is required</small>
                 <small *ngIf = "studentName.errors?.minlength" class = "text-danger">Name must be at least 3 chars</small>
+                <small *ngIf = "studentName.errors?.forbiddenName" class = "text-danger">{{studentName.errors?.forbiddenName.value | uppercase}} name not allowed</small>
             </div>
         </div>
 
