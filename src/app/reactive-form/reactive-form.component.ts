@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { AddressService } from '../address.service';
 import { EmployeeService } from '../employee.service';
 import { forbiddenNameValidator, forbiddenNameValidator2 } from '../shared/name.validator';
+import { PasswordValidator } from '../shared/password.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -60,7 +61,7 @@ export class ReactiveFormComponent implements OnInit {
       state: [''],
       postalCode: ['']
     })
-  })
+  },{validators: PasswordValidator}); /* I added the validator the the entire group, so that we can include both pass and confirm pass, not the separate controls*/
 
   ngOnInit(): void {
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));

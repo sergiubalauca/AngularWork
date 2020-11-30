@@ -8,32 +8,35 @@
             <!-- We bind the form control to the model with formControlName directive 
               -- We apply class.is-invalid to the element when the name is invalid and touched by using get()
             -->
-            <input [class.is-invalid] = "studentName.invalid &&
+            <input [class.is-invalid]="studentName.invalid &&
                                          studentName.touched" formControlName="name" type="text" class="form-control">
             <!-- Commented this one -- I need specific error message according to the validator in the class
                 <small [class.d-none] = "studentName.valid ||
                                      studentName.untouched" class = "text-danger">Name is required</small>
             -->
             <!-- ? is the safe navigation operator - it checks for null values -->
-            <div *ngIf = "studentName.invalid && studentName.touched">
-                <small *ngIf = "studentName.errors?.required" class = "text-danger">Name is required</small>
-                <small *ngIf = "studentName.errors?.minlength" class = "text-danger">Name must be at least 3 chars</small>
-                <small *ngIf = "studentName.errors?.forbiddenName" class = "text-danger">{{studentName.errors?.forbiddenName.value | uppercase}} name not allowed</small>
+            <div *ngIf="studentName.invalid && studentName.touched">
+                <small *ngIf="studentName.errors?.required" class="text-danger">Name is required</small>
+                <small *ngIf="studentName.errors?.minlength" class="text-danger">Name must be at least 3 chars</small>
+                <small *ngIf="studentName.errors?.forbiddenName"
+                    class="text-danger">{{studentName.errors?.forbiddenName.value | uppercase}} name not allowed</small>
             </div>
         </div>
 
         <div class="form-group">
             <label>Password</label>
-            <input formControlName="password" type="password" class="form-control">
+            <input type="password" class="form-control" formControlName="password">
         </div>
 
         <div class="form-group">
             <label>Confirm Password</label>
-            <input formControlName="confirmPassword" type="password" class="form-control">
+            <input [class.is-invalid]="registrationForm.errors?.misMatch" formControlName="confirmPassword"
+                formControlName="confirmPassword" type="password" class="form-control">
+            <small class="text-danger" *ngIf="registrationForm.errors?.misMatch">Passwords do not match</small>
         </div>
 
         <!-- Added formGroupName, in order to map to the 'address' FormGroup from the .ts file -->
-        <div formGroupName = "address">
+        <div formGroupName="address">
             <div class="form-group">
                 <label>City</label>
                 <input formControlName="city" type="text" class="form-control">
@@ -51,6 +54,6 @@
         </div>
 
         <button class="btn btn-primary" type="submit">Submit</button>
-        <button (click) = "loadApi()" class="btn btn-secondary ml-1" type="submit">Load data</button>
+        <button (click)="loadApi()" class="btn btn-secondary ml-1" type="submit">Load data</button>
     </form>
 </div>
