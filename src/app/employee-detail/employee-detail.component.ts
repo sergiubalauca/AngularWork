@@ -27,7 +27,7 @@ export class EmployeeDetailComponent implements OnInit {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        console.log("navigated back here :)");
+        //console.log("navigated back here :)");
         this.initialiseInvites();
       }
     });

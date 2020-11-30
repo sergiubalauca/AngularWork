@@ -4,10 +4,11 @@ import { Component, OnInit } from '@angular/core';
  * Also imported FormBuilder for not creating multiple form instances manually. 
  * Imported Validator class for managing the validations for the form.
  */
-import { FormControl, FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validator, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressService } from '../address.service';
+import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 import { forbiddenNameValidator, forbiddenNameValidator2 } from '../shared/name.validator';
 import { PasswordValidator } from '../shared/password.validator';
@@ -22,13 +23,19 @@ export class ReactiveFormComponent implements OnInit {
   private addressID: number;
   private subscription: Subscription;
   private subscriptionAddresses: Subscription;
+  private subscriptionUpdate: Subscription;
+  serverErrorMessage = '';
+
   registrationForm: FormGroup;
 
   constructor(private employeeService: EmployeeService,
     private addressService: AddressService,
     private route: Router,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private rout: Router) { }
+  private registerEmployee = new Employee(null, "", "", "", null, null);
+
 
   /* A getter for retrieving the name value, in order to use it in the template */
   get studentName() {
@@ -37,6 +44,32 @@ export class ReactiveFormComponent implements OnInit {
 
   get email() {
     return this.registrationForm.get('email');
+  }
+
+  get groupId() {
+    return this.registrationForm.get('groupId');
+  }
+
+  get AddressID() {
+    return this.registrationForm.get('AddressID');
+  }
+
+  get birthdate() {
+    return this.registrationForm.get('birthdate');
+  }
+
+  get alternateEmails() {
+    /* I type asserted it to FormArray -- why?? */
+    return this.registrationForm.get('alternateEmails') as FormArray;
+  }
+
+  /* Method for pushing new controls into the FormArray */
+  addAlternateEmail() {
+    this.alternateEmails.push(this.fb.control(''));
+  }
+  /* This is for removing unnecessary emails controls */
+  removeAlternateEmail() {
+    this.alternateEmails.removeAt(this.alternateEmails.length - 1);
   }
 
   /* We initialize a new FormGroup object with the FormControls from the html as input in the constructor */
@@ -52,8 +85,6 @@ export class ReactiveFormComponent implements OnInit {
     })
   });
 
-
-
   ngOnInit(): void {
     /* 2nd way of doing it by using an injected service of type FormBuilder, so no need for new instances of FormControl/Group */
     this.registrationForm = this.fb.group({
@@ -63,13 +94,18 @@ export class ReactiveFormComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator2(/password/)]],
       email: [''],
       password: [''],
+      birthdate: [''],
+      groupId: [''],
+      AddressID: [''],
       confirmPassword: [''],
       subscribe: [false],
       address: this.fb.group({
         city: [''],
         state: [''],
         postalCode: ['']
-      })
+      }),
+      /* I added the alternateEmail control by using FormArray, in order to play around with dynamic form control */
+      alternateEmails: this.fb.array([])
     }, { validators: PasswordValidator }); /* I added the validator the the entire group, so that we can include both pass and confirm pass, not the separate controls*/
 
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
@@ -84,12 +120,14 @@ export class ReactiveFormComponent implements OnInit {
            */
           this.registrationForm.patchValue({
             name: data.name,
-            email: data.email
+            email: data.email,
+            birthdate: data.birthdate,
+            groupId: data.groupId,
+            AddressID: data.addressID,
           })
 
           this.subscriptionAddresses = this.addressService.getAddress(data.addressID)
             .subscribe(data => {
-              console.log(data);
               this.registrationForm.patchValue({
                 address: {
                   city: data.city,
@@ -118,7 +156,30 @@ export class ReactiveFormComponent implements OnInit {
     })
   }
 
+  onSubmit() {
+    this.buildEmployee();
+
+    this.subscriptionUpdate = this.employeeService.updateEmployee(this.registerEmployee)
+      .subscribe(
+        data => console.log("Successfully updated employee!"),
+        error => this.serverErrorMessage = error
+      )
+    //delay(1);
+    if (this.serverErrorMessage == '')
+      this.rout.navigate(['/employee-details/']);
+  }
+
+  buildEmployee() {
+    this.registerEmployee.id = this.id;
+    this.registerEmployee.name = this.studentName.value;
+    this.registerEmployee.birthdate = this.birthdate.value;
+    this.registerEmployee.addressID = this.AddressID.value;
+    this.registerEmployee.groupId = this.groupId.value;
+    this.registerEmployee.email = this.email.value;
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionUpdate.unsubscribe();
   }
 }
