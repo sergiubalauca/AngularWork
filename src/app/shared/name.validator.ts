@@ -10,7 +10,7 @@ import { stringify } from 'querystring';
  * When the validation fails, it returns an object with key of type string and the value of type any.
  * If the validation is passed, it returns null. 
  */
-export var forbiddenNameValidator = (control: AbstractControl): { [key: string]: any } | null => {
+export let forbiddenNameValidator = (control: AbstractControl): { [key: string]: any } | null => {
     /* We use the test operator to see if the value of the control is 'admin' */
     const forbidden = /admin/.test(control.value);
     /* We return either the forbiddenName with the value from the contro, or null */
@@ -21,7 +21,7 @@ export var forbiddenNameValidator = (control: AbstractControl): { [key: string]:
  * in order to return the validator function itself. I need this, because I can only send
  * one input param to the function above. This is hard when trying to validate other fields for other strings not allowed. 
  */
-export var forbiddenNameValidator2 = (forbiddenName: RegExp): ValidatorFn => {
+export let forbiddenNameValidator2 = (forbiddenName: RegExp): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
         const forbidden = forbiddenName.test(control.value);
         return forbidden ? { 'forbiddenName': { value: control.value } } : null;

@@ -2,7 +2,7 @@ import { AbstractControl } from '@angular/forms';
 import { equal } from 'assert';
 
 /* the control itself point to the group of controls, the registrationForm - this is for CROSS FIELD validation */
-export var PasswordValidator = (control: AbstractControl): { [key: string]: any } | null => {
+export let PasswordValidator = (control: AbstractControl): { [key: string]: any } | null => {
 
     const password = control.get('password');
     const confirmPassword = control.get('confirmPassword');

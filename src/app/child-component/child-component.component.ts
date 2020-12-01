@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { delay } from 'rxjs/internal/operators/delay';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 

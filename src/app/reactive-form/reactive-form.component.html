@@ -9,7 +9,7 @@
             <!-- We bind the form control to the model with formControlName directive 
               -- We apply class.is-invalid to the element when the name is invalid and touched by using get()
             -->
-            <input [class.is-invalid]="studentName.invalid &&
+            <input #studentName [class.is-invalid]="studentName.invalid &&
                                          studentName.touched" formControlName="name" type="text" class="form-control">
             <!-- Commented this one -- I need specific error message according to the validator in the class
                 <small [class.d-none] = "studentName.valid ||
@@ -33,9 +33,9 @@
             <!-- We iterate over the array to display the emails; we also access the index - to find to the formControlName property;
               -- we also need to add the formArrayName directive to keep track of the formArray values
               -->
-            <div formArrayName = "alternateEmails" *ngFor = "let email of alternateEmails.controls; let i = index">
-                <input type = "text" type = "form-control my-1" [formControlName] = "i">
-                <button type="button" class="btn btn-secondary btn-sm m-2" (click)="removeAlternateEmail()">Remove email</button>
+            <div formArrayName = "alternateEmails" *ngFor = "let email of alternateEmails.controls; let idx = index">
+                <input type = "text" type = "form-control my-1" [formControlName] = "idx">
+                <button type="button" class="btn btn-secondary btn-sm m-2" (click)="removeAlternateEmail(idx)">Remove email</button>
             </div>
         </div>
 

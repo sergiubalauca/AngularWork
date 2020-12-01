@@ -1,5 +1,5 @@
 import { Route } from '@angular/compiler/src/core';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 /* 
  * Also imported FormBuilder for not creating multiple form instances manually. 
  * Imported Validator class for managing the validations for the form.
@@ -18,13 +18,15 @@ import { PasswordValidator } from '../shared/password.validator';
   templateUrl: './reactive-form.component.html',
   styleUrls: ['./reactive-form.component.css']
 })
-export class ReactiveFormComponent implements OnInit {
+export class ReactiveFormComponent implements OnInit, AfterViewInit {
   private id: number;
   private addressID: number;
   private subscription: Subscription;
   private subscriptionAddresses: Subscription;
   private subscriptionUpdate: Subscription;
   serverErrorMessage = '';
+  /* ViewChildDecorator stuff - this is a property representing the #studentName template ref variable from the DOM */
+  @ViewChild('studentName') studentElementRef: ElementRef;
 
   registrationForm: FormGroup;
 
@@ -34,6 +36,13 @@ export class ReactiveFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private rout: Router) { }
+
+    /* The ViewChild decorator only works in this lifecycle hook - this is where the dom elements are available */
+  ngAfterViewInit(): void {
+    this.studentElementRef.nativeElement.focus();
+    //console.log(this.studentElementRef); --- /* With this I can see all the properties of the element */
+  }
+
   private registerEmployee = new Employee(null, "", "", "", null, null);
 
 
@@ -68,7 +77,7 @@ export class ReactiveFormComponent implements OnInit {
     this.alternateEmails.push(this.fb.control(''));
   }
   /* This is for removing unnecessary emails controls */
-  removeAlternateEmail() {
+  removeAlternateEmail(i) {
     this.alternateEmails.removeAt(this.alternateEmails.length - 1);
   }
 
@@ -158,7 +167,7 @@ export class ReactiveFormComponent implements OnInit {
 
   onSubmit() {
     this.buildEmployee();
-
+    //console.log(this.registerEmployee);
     this.subscriptionUpdate = this.employeeService.updateEmployee(this.registerEmployee)
       .subscribe(
         data => console.log("Successfully updated employee!"),
@@ -180,6 +189,6 @@ export class ReactiveFormComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.subscriptionUpdate.unsubscribe();
+    //this.subscriptionUpdate.unsubscribe();
   }
 }
