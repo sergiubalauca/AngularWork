@@ -24,6 +24,8 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit {
   private subscription: Subscription;
   private subscriptionAddresses: Subscription;
   private subscriptionUpdate: Subscription;
+  private subscriptionSubject: Subscription;
+
   serverErrorMessage = '';
   /* ViewChildDecorator stuff - this is a property representing the #studentName template ref variable from the DOM */
   @ViewChild('studentName') studentElementRef: ElementRef;
@@ -95,12 +97,14 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit {
   });
 
   ngOnInit(): void {
-    this.employeeService.studentListMessage$.subscribe(
+    this.subscriptionSubject = this.employeeService.studentListMessage$.subscribe(
       message => {
         if (message === "Reactive edit")
-          alert("You are reactively editing the employee");
+          alert("You are about to reactively edit the employee");
+        this.subscriptionSubject.unsubscribe();
       }
     );
+
     /* 2nd way of doing it by using an injected service of type FormBuilder, so no need for new instances of FormControl/Group */
     this.registrationForm = this.fb.group({
       /* Applied the required validators rule for this field as second argument.
@@ -196,5 +200,6 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     //this.subscriptionUpdate.unsubscribe();
+
   }
 }
