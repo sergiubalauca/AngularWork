@@ -22,6 +22,7 @@ export let forbiddenNameValidator = (control: AbstractControl): { [key: string]:
  * one input param to the function above. This is hard when trying to validate other fields for other strings not allowed. 
  */
 export let forbiddenNameValidator2 = (forbiddenName: RegExp): ValidatorFn => {
+    console.log("gsb was here")
     return (control: AbstractControl): { [key: string]: any } | null => {
         const forbidden = forbiddenName.test(control.value);
         return forbidden ? { 'forbiddenName': { value: control.value } } : null;

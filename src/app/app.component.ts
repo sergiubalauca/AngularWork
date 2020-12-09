@@ -11,9 +11,8 @@ import {FormsModule} from '@angular/forms';
 })
 
 export class AppComponent {
-  title = 'intro2angular';
   /* Data to be sent to the child component */
   public name = "Sergiu"; 
-  public messageFromChild;
+  public messageFromChild:string;
   public windowLocation = window.location.href;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Employee, IEmployee } from './employee';
-import { Observable, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 /* In case we want to inject a service into this service - required only for a service */
@@ -9,24 +9,33 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class EmployeeService {
-  
+
   private _url: string = "https://localhost:44348/api/Students/";
-  
-  constructor(private http:HttpClient) { }
+
+  private _statusMessageSource = new Subject<string>();
+  /* To expose the subject as an observable, we declare it with a $ */
+  studentListMessage$ = this._statusMessageSource.asObservable();
+
+  constructor(private http: HttpClient) { }
+
+  /* Method for pushing a message between components */
+  sendMessage(message: string) {
+    this._statusMessageSource.next(message);
+  }
 
   /* I receive the observable (the item from the GET request) and cast it into an employee array with IEmployee */
-  getEmployees():Observable<IEmployee[]>{
+  getEmployees(): Observable<IEmployee[]> {
     /*return[
       {"id": 1, "name": "Andrew", "age": 30},
       {"id": 2, "name": "Brandon", "age": 25},
       {"id": 3, "name": "Christina", "age": 26},
       {"id": 4, "name": "Elena", "age": 28}
     ];*/
-    
+
     return this.http.get<IEmployee[]>(this._url).pipe((catchError(this.errorHandler)));
   }
 
-  getEmployee(id:number):Observable<Employee>{
+  getEmployee(id: number): Observable<Employee> {
     //console.log("id:" + id);
     // const observable = new Observable((subscriber) => {
     //   subscriber.next("initial hi")
@@ -40,19 +49,19 @@ export class EmployeeService {
     return this.http.get<Employee>(this._url + id).pipe((catchError(this.errorHandler)));
   }
 
-  updateEmployee(employee: Employee){
-    const requestBody = {id:employee.id, name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId, addressID:employee.addressID};
+  updateEmployee(employee: Employee) {
+    const requestBody = { id: employee.id, name: employee.name, email: employee.email, birthdate: employee.birthdate, groupId: employee.groupId, addressID: employee.addressID };
     //console.log(requestBody);
     //console.log(employee);
     return this.http.put(this._url + requestBody.id, requestBody).pipe((catchError(this.errorHandler)));
   }
 
-  deleteEmployee(id:number){
+  deleteEmployee(id: number) {
     return this.http.delete<any>(this._url + id);
   }
 
-  addEmployee(employee: Employee){
-    const requestBody = {name:employee.name, email:employee.email, birthdate:employee.birthdate, groupId:employee.groupId, addressID:employee.addressID};
+  addEmployee(employee: Employee) {
+    const requestBody = { name: employee.name, email: employee.email, birthdate: employee.birthdate, groupId: employee.groupId, addressID: employee.addressID };
     //console.log("I am sending: " + requestBody);
     return this.http.post(this._url, requestBody).pipe((catchError(this.errorHandler)));
   }

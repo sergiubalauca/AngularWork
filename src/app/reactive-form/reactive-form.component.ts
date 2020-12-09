@@ -37,10 +37,10 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private rout: Router) { }
 
-    /* The ViewChild decorator only works in this lifecycle hook - this is where the dom elements are available */
+  /* The ViewChild decorator only works in this lifecycle hook - this is where the dom elements are available */
   ngAfterViewInit(): void {
     this.studentElementRef.nativeElement.focus();
-    //console.log(this.studentElementRef); --- /* With this I can see all the properties of the element */
+    //console.log(this.studentElementRef); --- /* With this I can see all the properties of the element  */
   }
 
   private registerEmployee = new Employee(null, "", "", "", null, null);
@@ -95,13 +95,19 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit {
   });
 
   ngOnInit(): void {
+    this.employeeService.studentListMessage$.subscribe(
+      message => {
+        if (message === "Reactive edit")
+          alert("You are reactively editing the employee");
+      }
+    );
     /* 2nd way of doing it by using an injected service of type FormBuilder, so no need for new instances of FormControl/Group */
     this.registrationForm = this.fb.group({
       /* Applied the required validators rule for this field as second argument.
        * For multiple validations applied, we use an array
        */
       name: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator2(/password/)]],
-      email: [''],
+      email: ['', [Validators.required]],
       password: [''],
       birthdate: [''],
       groupId: [''],
