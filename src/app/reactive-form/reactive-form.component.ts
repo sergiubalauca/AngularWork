@@ -1,17 +1,18 @@
-import { Route } from '@angular/compiler/src/core';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-/* 
- * Also imported FormBuilder for not creating multiple form instances manually. 
+/*
+ * Also imported FormBuilder for not creating multiple form instances manually.
  * Imported Validator class for managing the validations for the form.
  */
-import { FormControl, FormGroup, FormBuilder, Validator, Validators, FormArray } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressService } from '../address.service';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
-import { forbiddenNameValidator, forbiddenNameValidator2 } from '../shared/name.validator';
+import { forbiddenNameValidator2 } from '../shared/name.validator';
 import { PasswordValidator } from '../shared/password.validator';
+
+/* CTRL + SHIFT + P = organize imports */
 
 @Component({
   selector: 'app-reactive-form',

@@ -1,23 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
-import { FormsModule } from '@angular/forms';
+import { CatsListComponent } from './cats-list/cats-list.component';
+import { CatsRegisterComponent } from './cats-register/cats-register.component';
+import { CatsService } from './cats.service';
+import { ChildComponentComponent } from './child-component/child-component.component';
 /*import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';*/
 import { EmployeeService } from './employee.service';
-import { HttpClientModule } from '@angular/common/http';
-import { CatsListComponent } from './cats-list/cats-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SensorListComponent } from './sensor-list/sensor-list.component';
-import { ChartsModule } from 'ng2-charts';
-import { ChildComponentComponent } from './child-component/child-component.component';
-import { CatsRegisterComponent } from './cats-register/cats-register.component';
-import { CatsService } from './cats.service';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { SensorListComponent } from './sensor-list/sensor-list.component';
+import { TestComponent } from './test/test.component';
+
 
 
 @NgModule({
