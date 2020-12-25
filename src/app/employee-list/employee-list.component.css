@@ -1,5 +1,122 @@
-.divider{
-    width:5px;
-    height:auto;
-    display:inline-block;
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+html,
+body {
+    height: 100%;
+    background-color: aqua;
+}
+
+.container {
+    display: flex;
+    border: 3px solid red;
+    flex-direction: row;
+    height: 100%;
+    /* Justify content distributes the elements across the X axis */
+    /*justify-content: space-evenly;*/
+    /* align items is for aligning items on the Y axis */
+    align-items: center;
+    /* Flex-wrap is for extending the items so that they will will on multiple lines */
+}
+
+.container>div {
+    padding: 2px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #ffeead;
+    width: 75px;
+}
+
+.edit {
+    /* set margin-left in order to move an item to the right hand side of the container */
+    margin-left: auto;
+}
+
+.back {
+    margin-right: auto;
+}
+
+.container>div:nth-child(1) {
+    background-color: lightgray;
+    color: black;
+    /* Align self makes it so that the item us aligned on the Y axis itself */
+    /*align-self: flex-start;*/
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>div:nth-child(2) {
+    background-color: lightgray;
+    color: black;
+    /*align-self: flex-start;*/
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>div:nth-child(3) {
+    background-color: lightgray;
+    color: black;
+    /*align-self: flex-start;*/
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>div:nth-child(4) {
+    background-color: lightgray;
+    color: black;
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>div:nth-child(5) {
+    background-color: lightgray;
+    color: black;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 150px;
+}
+
+.container>div:nth-child(6) {
+    background-color: lightgray;
+    color: black;
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>div:nth-child(7) {
+    background-color: lightgray;
+    color: black;
+    flex-basis: 75px;
+    flex-grow: 0;
+}
+
+.container>input {
+    background-color: lightgray;
+    color: black;
+    order: 1;
+    height: 50px;
+    flex: 4 2 100px;
+    /*
+    flex-basis: 100px;
+    flex-shrink: 2;
+    flex-grow: 4;
+    */
+}
+
+@media all and (max-width: 800px) {
+    .container {
+        flex-wrap: wrap;
+    }
+    .container>div {
+        flex: 1 1 50%;
+    }
+}
+
+@media all and (max-width: 500px) {
+    .container>div {
+        flex: 1 1 40%;
+    }
 }

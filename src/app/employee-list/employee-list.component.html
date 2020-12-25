@@ -1,23 +1,23 @@
-<h2>Param id is equal to: {{employeeId}}</h2>
-<button (click) = "goPrevious()">Previous</button>
-<div class="divider"></div>
-<button (click) = "goNext()">Next</button>
-<div class="divider"></div>
-<button (click) = "goToEmployees()">Back</button>
-<div class="divider"></div>
-<button (click) = "showChild()">Edit</button>
-<div class="divider"></div>
-<button (click) = "reactiveEmployeeEdit()"><b>Reactive Edit</b></button>
-<div class="divider"></div>
-<button (click) = "deleteEmployee()">Delete</button>
-<div class="divider"></div>
-<button (click) = "addEmployee()">Add</button>
+<p>Param id is equal to: {{employeeId}}</p>
+<nav class="container">
+    <div class="prev" (click)="goPrevious()">Previous</div>
+    <div class="next" (click)="goNext()">Next</div>
+    <div class="back" (click)="goToEmployees()">Back</div>
+    <div class="edit" (click)="showChild()">Edit</div>
+    <div class="reactEdit" (click)="reactiveEmployeeEdit()">Reactive Edit</div>
+    <div class="delete" (click)="deleteEmployee()">Delete</div>
+    <div class="add" (click)="addEmployee()">Add</div>
+
+    <input type="text" class="search" placeholder="Search...">
+
+
+</nav>
 <!-- Added router-outlet, so that I can navigate to the child componenet, so see it as an overview -->
 <router-outlet></router-outlet>
 
 
-<p>Employee list names</p>
-<ul *ngFor = "let employee of employees; let i = index">
+<p>Employee name</p>
+<ul *ngFor="let employee of employees; let i = index">
     <div *ngIf="employee.id == employeeId; then displayEmployee;">
         {{ employee.name }}
     </div>
@@ -35,6 +35,3 @@
         No employee data for this ID
     </h2>
 </ng-template>
-
-
-
