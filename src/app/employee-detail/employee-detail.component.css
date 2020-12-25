@@ -1,4 +1,4 @@
-.items li.selected{
-    background-color:pink;
-    color:red;
+.container div.selected {
+    background-color: pink;
+    color: red;
 }
