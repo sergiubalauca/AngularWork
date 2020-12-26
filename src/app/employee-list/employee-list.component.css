@@ -1,182 +1,201 @@
-        .divider {
-            width: 5px;
-            height: auto;
-            display: inline-block;
-        }
-        
-        html,
-        body {
-            height: 100%;
-            background-color: aqua;
-        }
-        
-        .container {
-            display: flex;
-            border: 3px solid red;
-            flex-direction: row;
-            height: 100%;
-            /* Justify content distributes the elements across the X axis */
-            /*justify-content: space-evenly;*/
-            /* align items is for aligning items on the Y axis */
-            align-items: center;
-            /* Flex-wrap is for extending the items so that they will will on multiple lines */
-        }
-        
-        .container>div {
-            padding: 2px;
-            text-align: center;
-            font-size: 1.2em;
-            color: #ffeead;
-            width: 75px;
-        }
-        
-        .edit {
-            /* set margin-left in order to move an item to the right hand side of the container */
-            margin-left: auto;
-        }
-        
-        .back {
-            margin-right: auto;
-        }
-        
-        .container>div:nth-child(1) {
-            background-color: lightgray;
-            color: black;
-            /* Align self makes it so that the item us aligned on the Y axis itself */
-            /*align-self: flex-start;*/
-            flex: 1 1 75px;
-        }
-        
-        .container>div:nth-child(2) {
-            background-color: lightgray;
-            color: black;
-            /*align-self: flex-start;*/
-            flex: 1 1 75px;
-        }
-        
-        .container>div:nth-child(3) {
-            background-color: lightgray;
-            color: black;
-            /*align-self: flex-start;*/
-            flex: 1 1 75px;
-        }
-        
-        .container>div:nth-child(4) {
-            background-color: lightgray;
-            color: black;
-            flex: 1 1 75px;
-        }
-        
-        .container>div:nth-child(5) {
-            background-color: lightgray;
-            color: black;
-            flex-grow: 1;
-            flex-shrink: 0;
-            flex: 1 1 150px;
-        }
-        
-        .container>div:nth-child(6) {
-            background-color: lightgray;
-            color: black;
-            flex: 1 1 75px;
-        }
-        
-        .container>div:nth-child(7) {
-            background-color: lightgray;
-            color: black;
-            flex: 1 1 75px;
-            flex-basis: 75px;
-            flex-grow: 1;
-            flex-shrink: 1;
-        }
-        
-        .container>input {
-            background-color: lightgray;
-            color: black;
-            order: 1;
-            height: 50px;
-            flex: 4 2 100px;
-            /*
-    flex-basis: 100px;
-    flex-shrink: 2;
-    flex-grow: 4;
-    */
-        }
-        
-        @media all and (max-width: 800px) {
-            .container {
-                flex-wrap: wrap;
-            }
-            .container>div {
-                flex: 1 1 50%;
-            }
-        }
-        
-        @media all and (max-width: 500px) {
-            .container>div {
-                flex: 1 1 40%;
-            }
-        }
-        
-        .containerGrid {
-            display: grid;
-            height: 100%;
-            /* Auto means it will take all the remaining space in the grid */
-            /* grid-template-columns: 100px 100px auto 150px; */
-            /* But we can use 1fr - fraction unit, in order to make the columns grow and shrink equally when resizing the window */
-            /* grid-template-columns: 1fr 1fr 1fr; */
-            /*Or I can do as following, not to repeat 1fr....*/
-            /* grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(6, 50px); */
-            /* Or I can use the shortcut for defining an entire grid like following... IT IS LIKE SHAPING AN "L */
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: 40px 200px 40px;
-            grid-gap: 3px;
-            /*The following is a visual representation of the grid - these are namings of the cells in the grid
-             * They have to match the exact number of rows and cols
-             */
-            grid-template-areas: 
-            ". h h h h h h h h h h h" 
-            "m c c c c c c c c c c c" 
-            "f f f f f f f f f f f f";
-        }
-        
-        .containerGrid div {
-            background-color: #ffeead;
-        }
-        /*header*/
-        
-        .containerGrid>div:first-child {
-            /* grid-column-start: 2;
-            grid-column-end: -1; */
-            /*OR with grid area*/
-            grid-area: h;
-            text-align: center;
-            background-color: aqua;
-        }
-        /*footer*/
-        
-        .containerGrid>div:last-child {
-            /* grid-column does the same exact thing as grid-col-start and grid-col-end */
-            /* grid-column: 1/3; */
-            /* OR with -1 : this means it will span till the last col line. It is useful when we do not know the no of cols*/
-            /* grid-column: 1/-1; */
-            /* OR with span */
-            /* grid-column: 1/span 2; */
-            grid-area: f;
-            text-align: center;
-            background-color: aqua;
-        }
-        /*menu*/
-        
-        .containerGrid>div:nth-child(2) {
-            /* grid-row: 1/3; */
-            grid-area: m;
-        }
-        /*content*/
-        
-        .containerGrid>div:nth-child(3) {
-            /* grid-column-start: 2; */
-            /* grid-column-end: -1; */
-            grid-area: c;
-        }
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}
+
+html,
+body {
+    height: 100%;
+    background-color: aqua;
+}
+
+.container {
+    display: flex;
+    border: 3px solid red;
+    flex-direction: row;
+    height: 100%;
+    /* Justify content distributes the elements across the X axis */
+    /*justify-content: space-evenly;*/
+    /* align items is for aligning items on the Y axis */
+    align-items: center;
+    /* Flex-wrap is for extending the items so that they will will on multiple lines */
+}
+
+.container>div {
+    padding: 2px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #ffeead;
+    width: 75px;
+}
+
+.edit {
+    /* set margin-left in order to move an item to the right hand side of the container */
+    margin-left: auto;
+}
+
+.back {
+    margin-right: auto;
+}
+
+.container>div:nth-child(1) {
+    background-color: lightgray;
+    color: black;
+    /* Align self makes it so that the item us aligned on the Y axis itself */
+    /*align-self: flex-start;*/
+    flex: 1 1 75px;
+}
+
+.container>div:nth-child(2) {
+    background-color: lightgray;
+    color: black;
+    /*align-self: flex-start;*/
+    flex: 1 1 75px;
+}
+
+.container>div:nth-child(3) {
+    background-color: lightgray;
+    color: black;
+    /*align-self: flex-start;*/
+    flex: 1 1 75px;
+}
+
+.container>div:nth-child(4) {
+    background-color: lightgray;
+    color: black;
+    flex: 1 1 75px;
+}
+
+.container>div:nth-child(5) {
+    background-color: lightgray;
+    color: black;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex: 1 1 150px;
+}
+
+.container>div:nth-child(6) {
+    background-color: lightgray;
+    color: black;
+    flex: 1 1 75px;
+}
+
+.container>div:nth-child(7) {
+    background-color: lightgray;
+    color: black;
+    flex: 1 1 75px;
+    flex-basis: 75px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.container>input {
+    background-color: lightgray;
+    color: black;
+    order: 1;
+    height: 50px;
+    flex: 4 2 100px;
+    /*
+flex-basis: 100px;
+flex-shrink: 2;
+flex-grow: 4;
+*/
+}
+
+@media all and (max-width: 1000px) {
+    .container {
+        flex-wrap: nowrap;
+    }
+    .container>div {
+        flex: 1 1 50%;
+    }
+}
+
+@media all and (max-width: 500px) {
+    .container>div {
+        flex: 1 1 40%;
+    }
+}
+
+.containerGrid {
+    display: grid;
+    height: 100%;
+    /* Auto means it will take all the remaining space in the grid */
+    /* grid-template-columns: 100px 100px auto 150px; */
+    /* But we can use 1fr - fraction unit, in order to make the columns grow and shrink equally when resizing the window */
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    /*Or I can do as following, not to repeat 1fr....*/
+    /* grid-template-columns: repeat(3, 1fr);
+grid-template-rows: repeat(6, 50px); */
+    /* Or I can use the shortcut for defining an entire grid like following... IT IS LIKE SHAPING AN "L */
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 40px 200px 40px;
+    grid-gap: 3px;
+    /*The following is a visual representation of the grid - these are namings of the cells in the grid
+        * They have to match the exact number of rows and cols
+        */
+    grid-template-areas: 
+    ". h h h h h h h h h h h" 
+    "m c c c c c c c c c c c" 
+    "f f f f f f f f f f f f";
+}
+
+.containerGridContent{
+    display: grid;
+    /* build up cols based on the auto-fit and minmax values and also added the shorthands for the col start end 
+    to use them later in the first child div of the grid so that will expand on the entire row*/
+    grid-template-columns: [content-start] repeat(auto-fit, minmax(100px,1fr)) [content-end];
+    grid-template-rows: repeat(2,50px);
+    /* With auto-rows we will always get rows created implicitly with that size */
+    grid-auto-rows: 50px;
+}
+
+.containerGridContent div {
+    background-color: #e2ddca;
+}
+
+.containerGridContent>div:first-child{
+    grid-column: content-start/content-end;
+    /* justify-self: center; */
+}
+/*header*/
+
+.containerGrid>div:first-child {
+    /* grid-column-start: 2;
+    grid-column-end: -1; */
+    /*OR with grid area*/
+    display:flex;
+    grid-area: h;
+    text-align: center;
+    background-color: aqua;
+}
+/*footer*/
+
+.containerGrid>div:last-child {
+    /* grid-column does the same exact thing as grid-col-start and grid-col-end */
+    /* grid-column: 1/3; */
+    /* OR with -1 : this means it will span till the last col line. It is useful when we do not know the no of cols*/
+    /* grid-column: 1/-1; */
+    /* OR with span */
+    /* grid-column: 1/span 2; */
+    grid-area: f;
+    text-align: center;
+    background-color: aqua;
+}
+/*menu*/
+
+.containerGrid>div:nth-child(2) {
+    /* grid-row: 1/3; */
+    grid-area: m;
+    background-color: cornsilk;
+}
+/*content*/
+
+.containerGrid>div:nth-child(3) {
+    /* grid-column-start: 2; */
+    /* grid-column-end: -1; */
+    display: grid;
+    grid-area: c;
+    background-color: white;
+}
