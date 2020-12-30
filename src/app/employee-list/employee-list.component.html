@@ -5,10 +5,10 @@
             <div class="next" (click)="goNext()">Next</div>
             <div class="back" (click)="goToEmployees()">Back</div>
             <div class="edit" (click)="showChild()">Edit</div>
-            <div class="reactEdit" (click)="reactiveEmployeeEdit()">Reactive Edit</div>
+            <div class="reactEdit" (click)="reactiveEmployeeEdit()" routerLinkActive="active">Reactive Edit</div>
             <div class="delete" (click)="deleteEmployee()">Delete</div>
             <div class="add" (click)="addEmployee()">Add</div>
-
+            <!-- I can use routerLink dor direct access like this <a [routerLink]="['/employees', 1]" routerLinkActive="active">Dragon Crisis</a>-->
             <input type="text" class="search" placeholder="Search...">
 
 

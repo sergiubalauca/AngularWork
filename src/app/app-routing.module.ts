@@ -1,5 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './Auth/login/login.component';
+import { AuthGuard } from './Auth/_helpers/auth.guard';
 import { CatsListComponent } from './cats-list/cats-list.component';
 import { CatsRegisterComponent } from './cats-register/cats-register.component';
 import { ChildComponentComponent } from './child-component/child-component.component';
@@ -12,38 +14,43 @@ import { TestComponent } from './test/test.component';
 
 
 const routes: Routes = [
-  /*{path:'', component: EmployeeDetailComponent},*/
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   /* Used for redirecting the user to a default page:: full because otherwise prefix will not work */
-  {path:'', redirectTo: '/employee-details', pathMatch: 'full'},
+  { path: '', redirectTo: '/employee-details', pathMatch: 'full', canActivate: [AuthGuard] },
   {
-    path:'employees',
-    component: EmployeeListComponent
+    path: 'employees',
+    component: EmployeeListComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path:'employees/:id', 
-    component:EmployeeListComponent,
+    path: 'employees/:id',
+    component: EmployeeListComponent,
+    canActivate: [AuthGuard],
     /* Added child routes */
-    children:[
-      {path:'child', component:ChildComponentComponent},
-      {path:'reactive-form', component:ReactiveFormComponent}
-    ]},
-  {path:'employee-details', component: EmployeeDetailComponent, runGuardsAndResolvers: 'always'},
-  {path:'cats', component: CatsListComponent},
-  {path:'cats-register', component: CatsRegisterComponent},
-  {path:'sensors', component: SensorListComponent},
-  {path:'**', component: PageNotFoundComponent} /* Used for displaying page not found */
+    children: [
+      { path: 'child', component: ChildComponentComponent, canActivate: [AuthGuard] },
+      { path: 'reactive-form', component: ReactiveFormComponent, canActivate: [AuthGuard] }
+    ]
+  },
+  { path: 'employee-details', component: EmployeeDetailComponent, runGuardsAndResolvers: 'always', canActivate: [AuthGuard] },
+  { path: 'cats', component: CatsListComponent, canActivate: [AuthGuard] },
+  { path: 'cats-register', component: CatsRegisterComponent, canActivate: [AuthGuard] },
+  { path: 'sensors', component: SensorListComponent, canActivate: [AuthGuard] },
+  { path: '**', component: PageNotFoundComponent } /* Used for displaying page not found */
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [EmployeeListComponent, 
-                                  EmployeeDetailComponent, 
-                                  CatsListComponent,
-                                  CatsRegisterComponent, 
-                                  SensorListComponent,
-                                  PageNotFoundComponent,
-                                  ChildComponentComponent,
-                                  ReactiveFormComponent];
+export const routingComponents = [EmployeeListComponent,
+  EmployeeDetailComponent,
+  CatsListComponent,
+  CatsRegisterComponent,
+  SensorListComponent,
+  PageNotFoundComponent,
+  ChildComponentComponent,
+  ReactiveFormComponent,
+  LoginComponent];

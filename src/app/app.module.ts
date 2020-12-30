@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthGuard } from './Auth/_helpers';
 import { CatsListComponent } from './cats-list/cats-list.component';
 import { CatsRegisterComponent } from './cats-register/cats-register.component';
 import { CatsService } from './cats.service';
@@ -44,8 +45,9 @@ import { TestComponent } from './test/test.component';
     ChartsModule,
     ReactiveFormsModule
   ],
-  providers: [EmployeeService, CatsService], /* Registered (linked) the service at module level, in order for it to be
-                                 * available for all the sub hierarchy classes and components - step 2 for using a service
+  providers: [EmployeeService, CatsService, AuthGuard], /* Registered (linked) the service at module level, in order for it to be
+                                 * available for all the sub hierarchy classes and components - step 2 for using a service.
+                                 Also AuthGuard needs to be added here, in order to be available for the app
                                  */
   bootstrap: [AppComponent]
 })

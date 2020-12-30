@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { hostViewClassName } from '@angular/compiler';
 import {FormsModule} from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 
@@ -15,4 +16,13 @@ export class AppComponent {
   public name = "Sergiu"; 
   public messageFromChild:string;
   public windowLocation = window.location.href;
+
+  public constructor(private router:Router){
+
+  }
+
+  public logout(){
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['/login']);
+  }
 }
