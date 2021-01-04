@@ -9,17 +9,22 @@ export class JwtInterceptor implements HttpInterceptor {
     constructor(private authenticationService: AuthenticationService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("Intercepting log in");
+
         /* If the req does not require any auth, then skip it */
-        if(request.headers.get('No-Auth') == 'True')
-        return next.handle(request.clone());
+        if (request.headers.get('No-Auth') == 'True') {
+            /*Original request are immutable - can't be changed, so what we can do is to clone them,
+             * in order to manipulate them */
+            console.log("Intercepting no auth needed");
+            return next.handle(request.clone());
+        }
 
         // add auth header with jwt if user is logged in and request is to the api url
         const currentUser = this.authenticationService.currentUserValue;
+        console.log("jwt intercept token: " + currentUser);
         const isLoggedIn = currentUser && currentUser.token;
         const isApiUrl = request.url.startsWith('http://localhost:4000');
-        if (isLoggedIn && isApiUrl) {
-            
+        if (isLoggedIn /*&& isApiUrl*/) {
+            console.log("Intercepting adding auth");
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.token}`
@@ -27,6 +32,7 @@ export class JwtInterceptor implements HttpInterceptor {
             });
         }
 
+        /* The next.handle stuff means that we are passing control to the next interceptor in the chain, if there is any */
         return next.handle(request);
     }
 }

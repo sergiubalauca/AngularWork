@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { hostViewClassName } from '@angular/compiler';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from './Auth/_services/authentication.service';
+import { User } from './Auth/_models/user';
 
 
 
@@ -13,16 +15,18 @@ import { Router } from '@angular/router';
 
 export class AppComponent {
   /* Data to be sent to the child component */
-  public name = "Sergiu"; 
-  public messageFromChild:string;
+  public name = "Sergiu";
+  public messageFromChild: string;
   public windowLocation = window.location.href;
+  currentUser: User;
 
-  public constructor(private router:Router){
-
+  public constructor(private router: Router,
+    private authenticationService: AuthenticationService) {
+    //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  public logout(){
-    localStorage.removeItem('currentUser');
+  logout() {
+    this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
 }

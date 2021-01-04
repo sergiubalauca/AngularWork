@@ -1,11 +1,12 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthGuard } from './Auth/_helpers';
+import { AuthGuard, ErrorInterceptor, JwtInterceptor } from './Auth/_helpers';
 import { CatsListComponent } from './cats-list/cats-list.component';
 import { CatsRegisterComponent } from './cats-register/cats-register.component';
 import { CatsService } from './cats.service';
@@ -45,10 +46,16 @@ import { TestComponent } from './test/test.component';
     ChartsModule,
     ReactiveFormsModule
   ],
-  providers: [EmployeeService, CatsService, AuthGuard], /* Registered (linked) the service at module level, in order for it to be
-                                 * available for all the sub hierarchy classes and components - step 2 for using a service.
-                                 Also AuthGuard needs to be added here, in order to be available for the app
-                                 */
+  /* Registered (linked) the service at module level, in order for it to be
+  * available for all the sub hierarchy classes and components - step 2 for using a service.
+  Also AuthGuard needs to be added here, in order to be available for the app.
+  Added JwtHelper for checking if the token is expired or not along with the JWT_OPTIONS as per stackoverflow.
+  Added HTTP_INTERCEPTORS as well, in order to intercept calls.
+  */
+  providers: [EmployeeService, CatsService, AuthGuard, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
