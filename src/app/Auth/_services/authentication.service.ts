@@ -33,7 +33,7 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient, private jwtHelper:JwtHelperService) {
+    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -61,8 +61,15 @@ export class AuthenticationService {
 
     public isAuthenticated(): boolean {
         const token = localStorage.getItem('currentUser');
+
+        /* If the token is expired, then remove the local storage var and send null to the behavioural subject */
+        if (this.jwtHelper.isTokenExpired(token)) {
+            localStorage.removeItem('currentUser');
+            this.currentUserSubject.next(null);
+        }
+
         // Check whether the token is expired and return
         // true or false
         return !this.jwtHelper.isTokenExpired(token);
-      }
+    }
 }
