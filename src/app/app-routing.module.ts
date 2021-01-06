@@ -10,6 +10,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
+import { AddTodoComponent } from './ToDo/add-todo/add-todo.component';
 
 
 const routes: Routes = [
@@ -36,7 +37,8 @@ const routes: Routes = [
   { path: 'cats', component: CatsListComponent, canActivate: [AuthGuard] },
   { path: 'cats-register', component: CatsRegisterComponent, canActivate: [AuthGuard] },
   { path: 'sensors', component: SensorListComponent, canActivate: [AuthGuard] },
-  { path: '**', component: PageNotFoundComponent } /* Used for displaying page not found */
+  { path: 'add-todo', component: AddTodoComponent, canActivate: [AuthGuard] },
+  { path: '**', component: PageNotFoundComponent } /* Used for displaying page not found */  
 ];
 
 @NgModule({
@@ -52,4 +54,5 @@ export const routingComponents = [EmployeeListComponent,
   PageNotFoundComponent,
   ChildComponentComponent,
   ReactiveFormComponent,
-  LoginComponent];
+  LoginComponent,
+  AddTodoComponent];

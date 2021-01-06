@@ -18,6 +18,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { TestComponent } from './test/test.component';
+import { AddTodoComponent } from './ToDo/add-todo/add-todo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -33,7 +35,8 @@ import { TestComponent } from './test/test.component';
     SensorListComponent,
     ChildComponentComponent,
     CatsRegisterComponent,
-    ReactiveFormComponent
+    ReactiveFormComponent,
+    AddTodoComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { TestComponent } from './test/test.component';
      */
     HttpClientModule,
     ChartsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   /* Registered (linked) the service at module level, in order for it to be
   * available for all the sub hierarchy classes and components - step 2 for using a service.

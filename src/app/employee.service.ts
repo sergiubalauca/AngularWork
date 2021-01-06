@@ -20,7 +20,7 @@ export class EmployeeService {
 
   /* Method for pushing a message between components */
   sendMessage(message: string) {
-    console.log("asddsadasda")
+    console.log("Pushed notification");
     this._statusMessageSource.next(message);
   }
 

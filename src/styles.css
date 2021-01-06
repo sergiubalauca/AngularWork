@@ -11,3 +11,5 @@ nav a:hover{
 nav a:visited, a:link{
     color:red;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
