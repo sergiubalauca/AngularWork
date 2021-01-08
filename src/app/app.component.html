@@ -1,9 +1,9 @@
-<div style = "text-align:center">
+<div style="text-align:center">
   <h1>
     My website
   </h1>
 
-  <p><a routerLink = "/employee-details" routerLinkActive = "active">Home</a></p>
+  <p><a routerLink="/employee-details" routerLinkActive="active">Home</a></p>
   <!-- old test functionality uncomment XXXXXXXXX
   <h2>
     Message from child: {{messageFromChild}}
@@ -14,22 +14,25 @@
 <!-- old test functionality uncomment XXXXXXXXX 
 <div (childEvent) = "messageFromChild=$event" [parentData] = "name" app-test></div>-->
 
-<hr>
-<nav> <!-- With routerLink we navigate to the corresponding view defined in the router list
-           With routerLinkActive we define the CSS classes applied to the view after clicking -->
-  <a class="bg-light text-black-50" routerLink = "/employee-details" routerLinkActive = "active">Employees details </a>
-  <a class="bg-light text-black-50" routerLink = "/employees" routerLinkActive = "active">Employees names </a>
-  <a class="bg-light text-black-50" routerLink = "/cats" routerLinkActive = "active">Cats </a>
-  <a class="bg-light text-black-50" routerLink = "/cats-register" routerLinkActive = "active">Register cat </a>
-  <a class="bg-light text-black-50" routerLink = "/sensors" routerLinkActive = "active">Sensors </a>
-  <a class="bg-light text-black-50" routerLink = "/add-todo" routerLinkActive = "active">Todo </a>
-  <a (click)="logout()">Logout</a>
-</nav>
-<hr>
+
 <!--<div app-employee-list></div>
 <div app-employee-detail></div>
 <div app-cats-detail></div>-->
-<div [ngStyle]="{backgroundImage:'url(D:\Angular\intro2angular\src\app\cats-list\Background-image\backgr.jpg)'}" >
 
-</div>
+<mat-toolbar color="primary">
+  <hr>
+  <nav>
+    <!-- With routerLink we navigate to the corresponding view defined in the router list
+           With routerLinkActive we define the CSS classes applied to the view after clicking -->
+    <a class="bg-light text-black-50" routerLink="/employee-details" routerLinkActive="active">Employees details </a>
+    <a class="bg-light text-black-50" routerLink="/employees" routerLinkActive="active">Employees names </a>
+    <a class="bg-light text-black-50" routerLink="/cats" routerLinkActive="active">Cats </a>
+    <a class="bg-light text-black-50" routerLink="/cats-register" routerLinkActive="active">Register cat </a>
+    <a class="bg-light text-black-50" routerLink="/sensors" routerLinkActive="active">Sensors </a>
+    <a class="bg-light text-black-50" routerLink="/add-todo" routerLinkActive="active">Todo </a>
+    <a (click)="logout()">Logout</a>
+  </nav>
+  <hr>
+</mat-toolbar>
+
 <router-outlet></router-outlet> <!-- this specifies where a view is displayed THE ROUTER VIEW GOES HERE-->

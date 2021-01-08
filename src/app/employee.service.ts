@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Employee, IEmployee } from './employee';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 /* In case we want to inject a service into this service - required only for a service */
 @Injectable({
@@ -11,6 +12,7 @@ import { catchError } from 'rxjs/operators';
 export class EmployeeService {
 
   private _url: string = "https://localhost:44348/api/Students/";
+  private _envUrl = environment.baseUrl;
 
   private _statusMessageSource = new Subject<string>();
   /* To expose the subject as an observable, we declare it with a $ */
@@ -33,7 +35,7 @@ export class EmployeeService {
       {"id": 4, "name": "Elena", "age": 28}
     ];*/
 
-    return this.http.get<IEmployee[]>(this._url).pipe((catchError(this.errorHandler)));
+    return this.http.get<IEmployee[]>(`${this._envUrl}/Students`).pipe((catchError(this.errorHandler)));
   }
 
   getEmployee(id: number): Observable<Employee> {

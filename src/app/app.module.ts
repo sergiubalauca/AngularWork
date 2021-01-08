@@ -20,7 +20,8 @@ import { SensorListComponent } from './sensor-list/sensor-list.component';
 import { TestComponent } from './test/test.component';
 import { AddTodoComponent } from './ToDo/add-todo/add-todo.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MaterialModule } from './material.module';
+import { MaintainTodoComponent } from './ToDo/maintain-todo/maintain-todo.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChildComponentComponent,
     CatsRegisterComponent,
     ReactiveFormComponent,
-    AddTodoComponent
+    AddTodoComponent,
+    MaintainTodoComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     ChartsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   /* Registered (linked) the service at module level, in order for it to be
   * available for all the sub hierarchy classes and components - step 2 for using a service.
@@ -56,10 +59,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   Added JwtHelper for checking if the token is expired or not along with the JWT_OPTIONS as per stackoverflow.
   Added HTTP_INTERCEPTORS as well, in order to intercept calls.
   */
-  providers: [EmployeeService, CatsService, AuthGuard, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+  providers: [EmployeeService, 
+    CatsService, 
+    AuthGuard, 
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [MaintainTodoComponent]
 })
 export class AppModule { }

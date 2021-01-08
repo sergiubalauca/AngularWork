@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^11.0.5",
     "@angular/router": "^11.0.5",
     "@auth0/angular-jwt": "^5.0.2",
+    "@datorama/akita": "^5.3.0",
     "@ngrx/store": "^10.1.2",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",

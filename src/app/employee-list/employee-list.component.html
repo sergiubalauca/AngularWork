@@ -41,15 +41,15 @@
 <router-outlet></router-outlet>
 
 
-<p>Employee name</p>
+
 <ul *ngFor="let employee of employees; let i = index">
     <div *ngIf="employee.id == employeeId; then displayEmployee;">
-        {{ employee.name }}
+
     </div>
 
     <ng-template #displayEmployee>
         <h2>
-            {{ employee.name }}
+            <p>Employee name: {{ employee.name }} </p>
         </h2>
     </ng-template>
     <!--<li>{{employee.name}}</li>-->
@@ -60,4 +60,3 @@
         No employee data for this ID
     </h2>
 </ng-template>
-

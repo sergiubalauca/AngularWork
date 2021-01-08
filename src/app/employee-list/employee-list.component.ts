@@ -52,7 +52,7 @@ export class EmployeeListComponent implements OnInit {
   goToEmployees() {
     let selectedID = this.employeeId;
     /* Send optional route parameter with key-value pairs {} */
-    this.route1.navigate(['/employee-details', { id: selectedID, extraTestParam: "testPAram" }]);
+    this.route1.navigate(['/employee-details', { id: selectedID, extraTestParam: "bonusParameter" }]);
     /* 
      * Replaced the above line with the following: added relative navigation for flexibility.
      * Basically, it sais: I don't care about the path, just add to the current route the id
