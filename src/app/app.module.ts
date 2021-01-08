@@ -22,6 +22,9 @@ import { AddTodoComponent } from './ToDo/add-todo/add-todo.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { MaintainTodoComponent } from './ToDo/maintain-todo/maintain-todo.component';
+import { ToDoQuery } from './State/query';
+import { ToDoStore } from './State/store';
+import { ToDoService } from './todo.service';
 
 
 @NgModule({
@@ -59,7 +62,10 @@ import { MaintainTodoComponent } from './ToDo/maintain-todo/maintain-todo.compon
   Added JwtHelper for checking if the token is expired or not along with the JWT_OPTIONS as per stackoverflow.
   Added HTTP_INTERCEPTORS as well, in order to intercept calls.
   */
-  providers: [EmployeeService, 
+  providers: [EmployeeService,
+    ToDoQuery,
+    ToDoStore,
+    ToDoService, 
     CatsService, 
     AuthGuard, 
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

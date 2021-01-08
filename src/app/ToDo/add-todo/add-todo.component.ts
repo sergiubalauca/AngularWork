@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { filter } from 'rxjs/internal/operators/filter';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { take } from 'rxjs/internal/operators/take';
+import { ToDoQuery } from 'src/app/State/query';
+import { ToDoStore } from 'src/app/State/store';
+import { ToDoService } from 'src/app/todo.service';
 import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component';
 
 @Component({
@@ -8,13 +14,44 @@ import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component'
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
+  loading = false;
+  todos = [];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+    private todoQuery: ToDoQuery,
+    private todoStore: ToDoStore,
+    private _toDoService: ToDoService) { }
 
   private canCloseDialog: boolean;
 
   ngOnInit(): void {
     this.canCloseDialog = false;
+
+    this.todoQuery.getLoading().subscribe(res => this.loading = res);
+    this.todoQuery.getToDos().subscribe(res => this.todos = res);
+    this.todoQuery.getLoaded().pipe(
+      take(1), /* Fetch the value from the store only once */
+      filter(res => !res), /* Only when the response is false then the code will be executed because of ! */
+      switchMap(() => {
+        this.todoStore.setLoading(true);
+        return this._toDoService.getToDos();
+      })
+    ).subscribe(res => { /* Get all the todos */
+      this.todoStore.update(_state => {
+        console.log("res");
+        console.log(res);
+        this.todos = res;
+        return {
+          todos: res
+        };
+      });
+      this.todoStore.setLoading(false);
+    }, err => {
+      console.log("Err store: " + err);
+      this.todoStore.setLoading(false);
+    });
+    console.log("the array");
+    console.log(this.todos);
   }
 
   addToDo() {

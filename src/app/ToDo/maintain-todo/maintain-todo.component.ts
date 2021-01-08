@@ -1,6 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { filter } from 'rxjs/internal/operators/filter';
+import { take } from 'rxjs/internal/operators/take';
+import { switchMap } from 'rxjs/operators';
+import { ToDoQuery } from 'src/app/State/query';
+import { ToDoStore } from 'src/app/State/store';
+import { ToDoService } from 'src/app/todo.service';
 
 
 @Component({
@@ -12,22 +19,27 @@ export class MaintainTodoComponent implements OnInit {
 
   form: FormGroup;
   description: string;
+  title: string;
+  
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MaintainTodoComponent>,
-    @Inject(MAT_DIALOG_DATA) data) {
+    @Inject(MAT_DIALOG_DATA) data,
+    ) {
 
     this.description = data.description;
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      description: [this.description, []]
+      title: new FormControl(null, [Validators.required]),
+      description: new FormControl(null, [Validators.required])
     });
   }
 
   save() {
+    console.log(this.form.value);
     this.dialogRef.close(this.form.value);
   }
 

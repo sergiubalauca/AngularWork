@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Store, StoreConfig } from "@datorama/akita";
 import { IEmployee } from "../employee";
+import { ToDo } from "../ToDo";
 
 
 export interface ToDoState{
-    todos:IEmployee[];
+    todos:ToDo[];
     isLoaded:boolean;
 }
 

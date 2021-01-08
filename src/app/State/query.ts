@@ -1,6 +1,7 @@
 import { Query } from "@datorama/akita";
 import { Observable } from "rxjs/internal/Observable";
 import { IEmployee } from "../employee";
+import { ToDo } from "../ToDo";
 import { ToDoState, ToDoStore } from "./store";
 
 /* Query is a class requiring the generic state and in the constructor it needs
@@ -12,7 +13,7 @@ export class ToDoQuery extends Query<ToDoState>{
         super(toDoStore);
     }
 
-    getToDos():Observable<IEmployee[]>{
+    getToDos():Observable<ToDo[]>{
         return this.select(state => state.todos);
     }
 
@@ -20,7 +21,7 @@ export class ToDoQuery extends Query<ToDoState>{
         return this.select(state => state.isLoaded);
     }
 
-    /* For the isLoading we did not declar any variable in the interface ToDoState in store.ts, but Akita 
+    /* For the isLoading we did not declare any variable in the interface ToDoState in store.ts, but Akita 
      * already does this automatically and it offers the method selectLoading() for that */
     getLoading():Observable<boolean>{
         return this.selectLoading();
