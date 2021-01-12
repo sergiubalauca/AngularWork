@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { filter } from 'rxjs/internal/operators/filter';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
-import { take } from 'rxjs/internal/operators/take';
+import { filter, switchMap, take } from 'rxjs/internal/operators';
 import { ToDoQuery } from 'src/app/State/query';
 import { ToDoStore } from 'src/app/State/store';
+import { ToDoStatus } from 'src/app/ToDo';
 import { ToDoService } from 'src/app/todo.service';
 import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component';
 
@@ -27,8 +26,12 @@ export class AddTodoComponent implements OnInit {
   ngOnInit(): void {
     this.canCloseDialog = false;
 
+    /* Get the loading and todos array values first */
     this.todoQuery.getLoading().subscribe(res => this.loading = res);
     this.todoQuery.getToDos().subscribe(res => this.todos = res);
+
+    /* Fetch the todos from the database .
+     * First we check if the getLoaded is false. If so, get the todos */
     this.todoQuery.getLoaded().pipe(
       take(1), /* Fetch the value from the store only once */
       filter(res => !res), /* Only when the response is false then the code will be executed because of ! */
@@ -37,10 +40,10 @@ export class AddTodoComponent implements OnInit {
         return this._toDoService.getToDos();
       })
     ).subscribe(res => { /* Get all the todos */
-      this.todoStore.update(_state => {
+      this.todoStore.update(_toDoState => {
         console.log("res");
         console.log(res);
-        this.todos = res;
+        // this.todos = res;
         return {
           todos: res
         };
@@ -50,12 +53,12 @@ export class AddTodoComponent implements OnInit {
       console.log("Err store: " + err);
       this.todoStore.setLoading(false);
     });
-    console.log("the array");
-    console.log(this.todos);
+    // console.log("the array");
+    // console.log(this.todos);
   }
 
+  /* Open the dialog method */
   addToDo() {
-    console.log("Adding ToDo");
     const dialogConfig = new MatDialogConfig();
     /* With disableclose = true, the user can exit the dialog by clicking outside of it */
     dialogConfig.disableClose = false;
@@ -72,26 +75,47 @@ export class AddTodoComponent implements OnInit {
     closeOnNavigation: this property defines if the dialog should automatically close itself when we navigate to another route in our single page application, which defaults to true.
     */
     dialogConfig.data = {
-      id: 1,
-      title: 'Angular For Beginners',
-      description: 'initial description'
+      header: 'New ToDo'
     };
 
-    this.dialog.open(MaintainTodoComponent, dialogConfig);
+    /* The component which will be opened via the dialog must be included in the entryComponents array in app.module.ts !!! */
+    let dialogRef = this.dialog.open(MaintainTodoComponent, dialogConfig);
 
-    const dialogRef = this.dialog.open(MaintainTodoComponent, dialogConfig);
-
+    /* For getting the data back from the dialog here, ne use the afterClosed() observable for which ne need a 
+     * reference to the dialog --- therefore we said let dialogRef = ... */
     dialogRef.afterClosed().subscribe(
-      data => {
-        console.log("Dialog output:", data);
+      res => {
+        //console.log("Dialog output:", res);
         this.canCloseDialog = true;
       }
     );
+
+
     // if (this.canCloseDialog == true) {
     //   console.log("trying to close the dialog")
     //   this.dialog.closeAll();
     //   this.canCloseDialog = false;
     // }
+  }
+  /* Only send the changes to be updated to the put method */
+  completeToDo(toDoID: number) {
+    this._toDoService.updateToDo(toDoID, { status: ToDoStatus.COMPLETED }).subscribe(
+      res => {
+        /* Also update the store. We pass a callback which will receive the previous state and return a new one  */
+        this.todoStore.update(state => {
+          /* First we fetch the todos and we create a copy of them, return a new state which is immutable */
+          const todos = [...state.todos];
+          /* Then we need to find the matching toDo index by id using findIndex */
+          const toDoIndex = todos.findIndex(t => t.toDoID == toDoID);
+          /* Next we are updating the ToDo at that index. I could have done it by using the data from res as it is already updated */
+          todos[toDoIndex] = {
+            ...todos[toDoIndex],
+            status: ToDoStatus.COMPLETED
+          }
+        })
+      },
+      err => { console.log(err) }
+    );
   }
 
 }

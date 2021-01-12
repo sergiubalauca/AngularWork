@@ -2,11 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { filter } from 'rxjs/internal/operators/filter';
-import { take } from 'rxjs/internal/operators/take';
-import { switchMap } from 'rxjs/operators';
 import { ToDoQuery } from 'src/app/State/query';
 import { ToDoStore } from 'src/app/State/store';
+import { ToDo } from 'src/app/ToDo';
 import { ToDoService } from 'src/app/todo.service';
 
 
@@ -18,17 +16,29 @@ import { ToDoService } from 'src/app/todo.service';
 export class MaintainTodoComponent implements OnInit {
 
   form: FormGroup;
-  description: string;
-  title: string;
-  
+  header: string;
+
+  todo: ToDo = new ToDo(439, "", "", "open");
+
+  get toDoTitle() {
+    return this.form.get('title');
+  }
+
+  get toDoDescription() {
+    return this.form.get('description');
+  }
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MaintainTodoComponent>,
+    /* This is an injection token for the data to be available in the dialog */
     @Inject(MAT_DIALOG_DATA) data,
-    ) {
+    private ToDoService: ToDoService,
+    private toDoStore: ToDoStore,
+    private toDoQuery: ToDoQuery
+  ) {
 
-    this.description = data.description;
+    this.header = data.header;
   }
 
   ngOnInit() {
@@ -39,12 +49,37 @@ export class MaintainTodoComponent implements OnInit {
   }
 
   save() {
-    console.log(this.form.value);
+    // console.log(this.form.value);
     this.dialogRef.close(this.form.value);
+    this.buildToDo();
+    // console.log(this.todo)
+    this.ToDoService.addToDo(this.todo).subscribe(res => {
+      console.log(res);
+      /* We are going to update the store with the value returned from the API */
+      this.toDoStore.update(state => {
+        return {
+          /* ... means returning all elements of an array from index 0 to i-1. Something like  
+           * let Array1 = [ 1, 2, 3]; let copyArra = [...Array1];
+           */
+          todos: [
+            ...state.todos,
+            res
+          ]
+        }
+      });
+      this.toDoStore.setLoading(false);
+
+      err => console.log(err);
+    });
   }
 
   close() {
     console.log("trying to close the dialog from the dialog");
     this.dialogRef.close();
+  }
+
+  buildToDo() {
+    this.todo.title = this.toDoTitle.value;
+    this.todo.description = this.toDoDescription.value;
   }
 }

@@ -3,8 +3,7 @@ import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { delay, startWith } from 'rxjs/operators';
-import { User } from '../Auth/_models/user';
+import { startWith } from 'rxjs/operators';
 import { AuthenticationService } from '../Auth/_services';
 import { EmployeeService } from '../employee.service';
 
