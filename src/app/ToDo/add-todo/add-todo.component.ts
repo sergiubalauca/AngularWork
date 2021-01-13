@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { filter, switchMap, take } from 'rxjs/internal/operators';
 import { ToDoQuery } from 'src/app/State/query';
 import { ToDoStore } from 'src/app/State/store';
-import { ToDoStatus } from 'src/app/ToDo';
+import { ToDo, ToDoStatus } from 'src/app/ToDo';
 import { ToDoService } from 'src/app/todo.service';
 import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component';
 
@@ -13,8 +13,15 @@ import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component'
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
-  loading = false;
-  todos = [];
+  loading: boolean = false;
+  todos: ToDo[] = [];
+  public toDoComplete: boolean = false;
+  public toDoStatus: string = "Mark as completed";
+
+  public styleClass = {
+    // "color:red": !this.complete,
+    // "color:yellow": this.complete
+  }
 
   constructor(private dialog: MatDialog,
     private todoQuery: ToDoQuery,
@@ -99,8 +106,10 @@ export class AddTodoComponent implements OnInit {
   }
   /* Only send the changes to be updated to the put method */
   completeToDo(toDoID: number) {
-    this._toDoService.updateToDo(toDoID, { status: ToDoStatus.COMPLETED }).subscribe(
+    this._toDoService.updateStatus(toDoID, { status: ToDoStatus.COMPLETED }).subscribe(
       res => {
+        // this.toDoComplete = true;
+        // this.toDoStatus = "Completed";
         /* Also update the store. We pass a callback which will receive the previous state and return a new one  */
         this.todoStore.update(state => {
           /* First we fetch the todos and we create a copy of them, return a new state which is immutable */
@@ -111,11 +120,36 @@ export class AddTodoComponent implements OnInit {
           todos[toDoIndex] = {
             ...todos[toDoIndex],
             status: ToDoStatus.COMPLETED
+          };
+          /* Return the new state */
+          return {
+            state, /* or ...state */
+            todos
           }
         })
+        this.todoStore.setLoading(false);
       },
       err => { console.log(err) }
     );
+  }
+
+  deleteToDo(toDoID: number) {
+    this._toDoService.deleteToDo(toDoID).subscribe(res => {
+
+      /* REDUCER FUNCTION !!! */
+      console.log([1, 2, 3, 4].reduce((accumulator, currentValue, currentIndex, array) => {
+        return accumulator * currentValue
+      }, 1));
+
+      this.todoStore.update(state => {
+        /* return a new state */
+        return {
+          ...state, /* With this we are spreading the previous state !!!!! */
+          todos: state.todos.filter(t => t.toDoID !== toDoID) /* This will remove the todo with this id from the array */
+        }
+      })
+    },
+      err => console.log(err));
   }
 
 }

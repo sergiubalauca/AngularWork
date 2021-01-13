@@ -4,15 +4,23 @@
     </button>
 
     <mat-spinner *ngIf="loading"></mat-spinner>
-    
+
     <ng-container *ngIf="!loading && todos.length > 0; then showToDos; else noToDos"></ng-container>
     <ng-template #showToDos>
         <mat-card *ngFor="let todo of todos">
-            <p>Title: {{todo.title}}</p>
+            <p [ngClass]="{complete:todo.status === 'completed'}">Title: {{todo.title}}</p>
             <p>Description: {{todo.description}}</p>
-            <button class="mark-completed-button" mat-stroked-button (click) = "completeToDo(todo.toDoID)">
-                Mark as completed
+
+            <button class="mark-completed-button" *ngIf="todo.status === 'open'" mat-stroked-button
+                (click)="completeToDo(todo.toDoID)">
+                Mark as complete
             </button>
+
+            <button class="mark-completed-button" *ngIf="todo.status === 'completed'" mat-stroked-button
+                (click)="deleteToDo(todo.toDoID)">
+                Delete
+            </button>
+
         </mat-card>
     </ng-template>
     <ng-template #noToDos>
