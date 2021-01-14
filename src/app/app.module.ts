@@ -25,6 +25,7 @@ import { MaintainTodoComponent } from './ToDo/maintain-todo/maintain-todo.compon
 import { ToDoQuery } from './State/query';
 import { ToDoStore } from './State/store';
 import { ToDoService } from './todo.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ToDoService } from './todo.service';
     ChartsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    DragDropModule
   ],
   /* Registered (linked) the service at module level, in order for it to be
   * available for all the sub hierarchy classes and components - step 2 for using a service.

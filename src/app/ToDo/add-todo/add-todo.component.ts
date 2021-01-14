@@ -6,6 +6,9 @@ import { ToDoStore } from 'src/app/State/store';
 import { ToDo, ToDoStatus } from 'src/app/ToDo';
 import { ToDoService } from 'src/app/todo.service';
 import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component';
+import { CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+/* DragDropModule for the ToDo List */
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-add-todo',
@@ -15,13 +18,11 @@ import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component'
 export class AddTodoComponent implements OnInit {
   loading: boolean = false;
   todos: ToDo[] = [];
+  public toDoD: ToDo[];
+  public doneD: ToDo[];
+
   public toDoComplete: boolean = false;
   public toDoStatus: string = "Mark as completed";
-
-  public styleClass = {
-    // "color:red": !this.complete,
-    // "color:yellow": this.complete
-  }
 
   constructor(private dialog: MatDialog,
     private todoQuery: ToDoQuery,
@@ -35,7 +36,11 @@ export class AddTodoComponent implements OnInit {
 
     /* Get the loading and todos array values first */
     this.todoQuery.getLoading().subscribe(res => this.loading = res);
-    this.todoQuery.getToDos().subscribe(res => this.todos = res);
+    this.todoQuery.getToDos().subscribe(res => {
+      this.todos = res;
+      this.toDoD = [...res.filter(t => t.status === 'open')];
+      this.doneD = [...res.filter(t => t.status === 'completed')];
+    });
 
     /* Fetch the todos from the database .
      * First we check if the getLoaded is false. If so, get the todos */
@@ -52,7 +57,9 @@ export class AddTodoComponent implements OnInit {
         console.log(res);
         // this.todos = res;
         return {
-          todos: res
+          todos: res,
+          toDoD: [...res.filter(t => t.status === 'open')],
+          doneD: [...res.filter(t => t.status === 'completed')]
         };
       });
       this.todoStore.setLoading(false);
@@ -60,8 +67,9 @@ export class AddTodoComponent implements OnInit {
       console.log("Err store: " + err);
       this.todoStore.setLoading(false);
     });
-    // console.log("the array");
-    // console.log(this.todos);
+    /* Update the other toDos arrays for the drag and drop */
+    // this.toDoD = [...this.todos.filter(t => t.status === 'open')];
+    // this.doneD = [...this.todos.filter(t => t.status === 'completed')];
   }
 
   /* Open the dialog method */
@@ -137,7 +145,7 @@ export class AddTodoComponent implements OnInit {
     this._toDoService.deleteToDo(toDoID).subscribe(res => {
 
       /* REDUCER FUNCTION !!! */
-      console.log([1, 2, 3, 4].reduce((accumulator, currentValue, currentIndex, array) => {
+      console.log("Reduce function result: " + [1, 2, 3, 4].reduce((accumulator, currentValue, currentIndex, array) => {
         return accumulator * currentValue
       }, 1));
 
@@ -151,5 +159,76 @@ export class AddTodoComponent implements OnInit {
     },
       err => console.log(err));
   }
+
+  /* ============================= drag and drop stuff =============================== */
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+  }
+
+  /* With these I can actually get notified about the items being moved in/out of the drop zone */
+  enteredOpen(event: CdkDragEnter<string[]>) {
+    this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
+  }
+
+  exitedOpen(event: CdkDragExit<string[]>) {
+    this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
+  }
+
+  enteredCompleted(event: CdkDragEnter<string[]>) {
+    this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
+  }
+
+  exitedCompleted(event: CdkDragExit<string[]>) {
+    this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
+  }
+
+  private updateStore(toDoID: number, toDoStatus: ToDoStatus) {
+    this._toDoService.updateStatus(toDoID, { status: toDoStatus }).subscribe(
+      res => {
+        // this.toDoComplete = true;
+        // this.toDoStatus = "Completed";
+        /* Also update the store. We pass a callback which will receive the previous state and return a new one  */
+        this.todoStore.update(state => {
+          /* First we fetch the todos and we create a copy of them, return a new state which is immutable */
+          const todos = [...state.todos];
+          const toDoDs = [...state.todos.filter(t => t.status == 'open')];
+          const dones = [...state.todos.filter(t => t.status == 'completed')];
+
+          /* Then we need to find the matching toDo index by id using findIndex */
+          const toDoIndex = todos.findIndex(t => t.toDoID == toDoID);
+          /* Next we are updating the ToDo at that index. I could have done it by using the data from res as it is already updated */
+          todos[toDoIndex] = {
+            ...todos[toDoIndex],
+            status: toDoStatus
+          };
+          toDoDs[toDoIndex] = {
+            ...toDoDs[toDoIndex],
+            status: toDoStatus
+          };
+          dones[toDoIndex] = {
+            ...dones[toDoIndex],
+            status: toDoStatus
+          };
+          /* Return the new state */
+          return {
+            state, /* or ...state */
+            toDoDs,
+            dones,
+            todos
+          }
+        })
+        this.todoStore.setLoading(false);
+      },
+      err => { console.log(err) }
+    );
+  }
+  /* ============================= END drag and drop stuff =============================== */
 
 }

@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Store, StoreConfig } from "@datorama/akita";
-import { IEmployee } from "../employee";
 import { ToDo } from "../ToDo";
 
 
 export interface ToDoState{
     todos:ToDo[];
+    toDoD:ToDo[];
+    doneD:ToDo[];
     isLoaded:boolean;
 }
 
@@ -13,6 +14,8 @@ export interface ToDoState{
 export const getInitialState = () => {
     return{
         todos:[],
+        toDoD:[],
+        doneD:[],
         isLoaded: false
     }
 }
