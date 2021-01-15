@@ -50,7 +50,7 @@ export class ToDoService {
     }
 
     requestBody.status = changes.status;
-    console.log(changes);
+    console.log("In ToDoService " + changes);
     console.log(requestBody);
     // todos[toDoIndex] = {
     //   ...todos[toDoIndex],

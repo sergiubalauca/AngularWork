@@ -9,6 +9,7 @@ import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component'
 import { CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 /* DragDropModule for the ToDo List */
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-todo',
@@ -20,6 +21,8 @@ export class AddTodoComponent implements OnInit {
   todos: ToDo[] = [];
   public toDoD: ToDo[];
   public doneD: ToDo[];
+
+  private toDoSubscription: Subscription;
 
   public toDoComplete: boolean = false;
   public toDoStatus: string = "Mark as completed";
@@ -36,7 +39,7 @@ export class AddTodoComponent implements OnInit {
 
     /* Get the loading and todos array values first */
     this.todoQuery.getLoading().subscribe(res => this.loading = res);
-    this.todoQuery.getToDos().subscribe(res => {
+    this.toDoSubscription = this.todoQuery.getToDos().subscribe(res => {
       this.todos = res;
       this.toDoD = [...res.filter(t => t.status === 'open')];
       this.doneD = [...res.filter(t => t.status === 'completed')];
@@ -169,24 +172,34 @@ export class AddTodoComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+      
+      /* Update the store with the new statuses */
+      if (event.item.data['status'] === 'open')
+        this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
+      else
+        this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
     }
   }
 
   /* With these I can actually get notified about the items being moved in/out of the drop zone */
   enteredOpen(event: CdkDragEnter<string[]>) {
-    this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
+    //console.log("enteredOpen");
+    // this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
   }
 
   exitedOpen(event: CdkDragExit<string[]>) {
-    this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
+    //console.log("exitOpen");
+    // this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
   }
 
   enteredCompleted(event: CdkDragEnter<string[]>) {
-    this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
+    // console.log("enteredCompleted");
+    // this.updateStore(event.item.data['toDoID'], ToDoStatus.COMPLETED);
   }
 
   exitedCompleted(event: CdkDragExit<string[]>) {
-    this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
+    // console.log("exitCompleted");
+    // this.updateStore(event.item.data['toDoID'], ToDoStatus.OPEN);
   }
 
   private updateStore(toDoID: number, toDoStatus: ToDoStatus) {
@@ -195,6 +208,7 @@ export class AddTodoComponent implements OnInit {
         // this.toDoComplete = true;
         // this.toDoStatus = "Completed";
         /* Also update the store. We pass a callback which will receive the previous state and return a new one  */
+        this.todoStore.setLoading(true);
         this.todoStore.update(state => {
           /* First we fetch the todos and we create a copy of them, return a new state which is immutable */
           const todos = [...state.todos];
@@ -230,5 +244,7 @@ export class AddTodoComponent implements OnInit {
     );
   }
   /* ============================= END drag and drop stuff =============================== */
-
+  ngOnDestroy() {
+    this.toDoSubscription.unsubscribe()
+  }
 }

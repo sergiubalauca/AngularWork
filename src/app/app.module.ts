@@ -26,7 +26,11 @@ import { ToDoQuery } from './State/query';
 import { ToDoStore } from './State/store';
 import { ToDoService } from './todo.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import {
+  createRxDatabase,
+  RxDatabase
+  /* ... */
+} from 'rxdb';
 
 @NgModule({
   declarations: [
