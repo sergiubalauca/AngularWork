@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './Auth/_services/authentication.service';
 import { User } from './Auth/_models/user';
+import { ToDosRepository } from './rxdb/repositories/todos.repository';
 
 
 
@@ -24,6 +25,10 @@ export class AppComponent {
     private authenticationService: AuthenticationService) {
     //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
+
+  // public initRxDB() {
+  //   console.log(this.todosRepo.getAllJobs$);
+  // }
 
   logout() {
     this.authenticationService.logout();

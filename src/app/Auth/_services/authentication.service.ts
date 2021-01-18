@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../_models';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { DatabaseProvider } from 'src/app/rxdb/rxdb-create';
 
 /* 
 --- The authentication service is used to login & logout of the Angular app, it notifies other components when the user 
@@ -33,7 +34,9 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+    constructor(private http: HttpClient,
+        private jwtHelper: JwtHelperService/*,
+        private databaseProvider: DatabaseProvider*/) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -56,6 +59,7 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+        // this.databaseProvider.clearDatabase();
         //location.reload();
     }
 

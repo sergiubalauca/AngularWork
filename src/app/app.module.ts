@@ -26,11 +26,6 @@ import { ToDoQuery } from './State/query';
 import { ToDoStore } from './State/store';
 import { ToDoService } from './todo.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {
-  createRxDatabase,
-  RxDatabase
-  /* ... */
-} from 'rxdb';
 
 @NgModule({
   declarations: [
@@ -71,12 +66,13 @@ import {
   providers: [EmployeeService,
     ToDoQuery,
     ToDoStore,
-    ToDoService, 
-    CatsService, 
-    AuthGuard, 
+    ToDoService,
+    CatsService,
+    AuthGuard,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
   bootstrap: [AppComponent],
   entryComponents: [MaintainTodoComponent]

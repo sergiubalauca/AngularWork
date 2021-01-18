@@ -1,12 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AuthenticationService } from '../_services';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToDoService } from 'src/app/todo.service';
+
+export let AppInjector: Injector;
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) { }
+    constructor(private router: Router,
+        private authenticationService: AuthenticationService,
+        private route: ActivatedRoute,
+        private injector: Injector) {
+        AppInjector = this.injector;
+    }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -18,18 +27,26 @@ export class JwtInterceptor implements HttpInterceptor {
             return next.handle(request.clone());
         }
 
+        // const loaderService = AppInjector.get(ToDoService)
+
+        // console.log(loaderService.getToDos());
+
         // add auth header with jwt if user is logged in and request is to the api url
         const currentUser = this.authenticationService.currentUserValue;
-        console.log("jwt intercept token: " + currentUser);
-        const isLoggedIn = currentUser && currentUser.token;
+        // console.log("jwt intercept token");
+        let isLoggedIn = currentUser && currentUser.token;
+
         const isApiUrl = request.url.startsWith('http://localhost:4000');
         if (isLoggedIn /*&& isApiUrl*/) {
-            console.log("Intercepting adding auth");
+            console.log("Intercepting adding auth: " + isLoggedIn);
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.token}`
                 }
             });
+        }
+        else {
+            //this.router.navigate(['/login']);
         }
 
         /* The next.handle stuff means that we are passing control to the next interceptor in the chain, if there is any */
