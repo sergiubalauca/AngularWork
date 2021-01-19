@@ -9,7 +9,8 @@ import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component'
 import { CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 /* DragDropModule for the ToDo List */
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { ToDosRepository } from 'src/app/rxdb/repositories';
 
 @Component({
   selector: 'app-add-todo',
@@ -30,11 +31,19 @@ export class AddTodoComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private todoQuery: ToDoQuery,
     private todoStore: ToDoStore,
-    private _toDoService: ToDoService) { }
+    private _toDoService: ToDoService,
+    private todosRepo: ToDosRepository) { }
+  public todosRxDB$: Observable<ToDo[]>;
 
   private canCloseDialog: boolean;
 
+  public initRxDB() {
+    // this.todosRxDB$ = this.todosRepo.getAllJobs$();
+    this.todosRepo.insertToDo();
+  }
+
   ngOnInit(): void {
+    this.initRxDB();
     this.canCloseDialog = false;
 
     /* Get the loading and todos array values first */

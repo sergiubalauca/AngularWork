@@ -1,6 +1,9 @@
 <div class="container">
     <button (click)="addToDo()" class="add-todo-button" mat-raised-button color="primary">
         Add ToDo
+        <li *ngFor="let item of todosRxDB$ | async; index as i">
+            {{item}}
+        </li>
     </button>
 
     <mat-spinner *ngIf="loading"></mat-spinner>
@@ -33,10 +36,8 @@
         <div class="example-container">
             <h2>To do</h2>
 
-            <div cdkDropList [cdkDropListData]="toDoD" class="example-list"
-                (cdkDropListDropped)="drop($event)" 
-                (cdkDropListExited)="exitedOpen($event)"
-                (cdkDropEntered)="enteredOpen($event)">
+            <div cdkDropList [cdkDropListData]="toDoD" class="example-list" (cdkDropListDropped)="drop($event)"
+                (cdkDropListExited)="exitedOpen($event)" (cdkDropEntered)="enteredOpen($event)">
                 <div class="example-box" *ngFor="let item of toDoD" cdkDrag [cdkDragData]="item">
                     {{item.title}}
                 </div>
@@ -46,10 +47,8 @@
         <div class="example-container">
             <h2>Done</h2>
 
-            <div cdkDropList [cdkDropListData]="doneD" class="example-list" 
-            (cdkDropListDropped)="drop($event)"
-            (cdkDropListExited)="exitedCompleted($event)"
-            (cdkDropEntered)="enteredCompleted($event)">
+            <div cdkDropList [cdkDropListData]="doneD" class="example-list" (cdkDropListDropped)="drop($event)"
+                (cdkDropListExited)="exitedCompleted($event)" (cdkDropEntered)="enteredCompleted($event)">
                 <!-- In order to pass the data to the entered/exited methods, I need this cdkDragData item -->
                 <div class="example-box" *ngFor="let item of doneD" cdkDrag [cdkDragData]="item">
                     {{item.title}}

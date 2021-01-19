@@ -3,9 +3,12 @@ import { ToDo } from './models/ToDo.model';
 import { ToDosRepository } from './repositories/todos.repository';
 import { DatabaseProvider } from './rxdb-create';
 
-function AppInitializer(dbProvider: DatabaseProvider) {
-    return () => dbProvider.createDB();
-}
+// export function AppInitializer(dbProvider: DatabaseProvider) {
+//     return () => {
+//         dbProvider.createDB();
+//         // dbProvider.addDBCollection();
+//     }
+// }
 
 @NgModule({
     declarations: [],
@@ -13,12 +16,12 @@ function AppInitializer(dbProvider: DatabaseProvider) {
     imports: [],
     providers: [
         ToDosRepository,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: AppInitializer,
-            deps: [DatabaseProvider],
-            multi: true,
-        },
+        // {
+        //     provide: APP_INITIALIZER,
+        //     useFactory: AppInitializer,
+        //     deps: [DatabaseProvider],
+        //     multi: true,
+        // },
         DatabaseProvider,
     ],
     bootstrap: [],

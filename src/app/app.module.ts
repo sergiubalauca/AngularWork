@@ -26,6 +26,8 @@ import { ToDoQuery } from './State/query';
 import { ToDoStore } from './State/store';
 import { ToDoService } from './todo.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DatabaseModule } from './rxdb/database.module';
+import { ToDosRepository } from './rxdb/repositories/todos.repository';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    DragDropModule
+    DragDropModule,
+    DatabaseModule
   ],
   /* Registered (linked) the service at module level, in order for it to be
   * available for all the sub hierarchy classes and components - step 2 for using a service.
@@ -68,6 +71,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ToDoStore,
     ToDoService,
     CatsService,
+    ToDosRepository,
     AuthGuard,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
