@@ -8,7 +8,6 @@ import { ToDoService } from 'src/app/todo.service';
 import { MaintainTodoComponent } from '../maintain-todo/maintain-todo.component';
 import { CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 /* DragDropModule for the ToDo List */
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Observable, Subscription } from 'rxjs';
 import { ToDosRepository } from 'src/app/rxdb/repositories';
 
@@ -19,11 +18,16 @@ import { ToDosRepository } from 'src/app/rxdb/repositories';
 })
 export class AddTodoComponent implements OnInit {
   loading: boolean = false;
+
   todos: ToDo[] = [];
+
   public toDoD: ToDo[];
   public doneD: ToDo[];
 
   private toDoSubscription: Subscription;
+
+  public rxitems: ToDo[];
+  public todosRxDB$: Observable<ToDo[]>;
 
   public toDoComplete: boolean = false;
   public toDoStatus: string = "Mark as completed";
@@ -33,17 +37,22 @@ export class AddTodoComponent implements OnInit {
     private todoStore: ToDoStore,
     private _toDoService: ToDoService,
     private todosRepo: ToDosRepository) { }
-  public todosRxDB$: Observable<ToDo[]>;
+
 
   private canCloseDialog: boolean;
 
-  public initRxDB() {
-    // this.todosRxDB$ = this.todosRepo.getAllJobs$();
-    this.todosRepo.insertToDo();
+  public initRxDB(ToDo: ToDo[]) {
+    this.todosRepo.insertToDo(ToDo);
+
+    this.todosRxDB$ = this.todosRepo.getAllToDos$();
+
+    // this.todosRepo.getAllToDos$().subscribe(res => {
+    //   this.rxitems = res;
+    //   // console.log(res[0].description);
+    // });
   }
 
   ngOnInit(): void {
-    this.initRxDB();
     this.canCloseDialog = false;
 
     /* Get the loading and todos array values first */
@@ -53,6 +62,8 @@ export class AddTodoComponent implements OnInit {
       this.toDoD = [...res.filter(t => t.status === 'open')];
       this.doneD = [...res.filter(t => t.status === 'completed')];
     });
+
+
 
     /* Fetch the todos from the database .
      * First we check if the getLoaded is false. If so, get the todos */
@@ -75,6 +86,7 @@ export class AddTodoComponent implements OnInit {
         };
       });
       this.todoStore.setLoading(false);
+      this.initRxDB(this.toDoD);
     }, err => {
       console.log("Err store: " + err);
       this.todoStore.setLoading(false);

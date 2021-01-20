@@ -6,7 +6,7 @@ const toDoSchema: RxJsonSchema = {
     keyCompression: true,
     type: 'object',
     properties: {
-        id: {
+        toDoID: {
             type: 'number'
         },
         employeeID: {
@@ -22,12 +22,12 @@ const toDoSchema: RxJsonSchema = {
         status: {
             type: 'string',
             enum: ['open', 'completed']
-        }
+        },
     },
     required: ['employeeID', 'title', 'description', 'status'],
     indexes: [
-        'id', // <- this will create a simple index for the `firstName` field
-        ['id', 'title'] // <- this will create a compound-index for these two fields
+        'toDoID', // <- this will create a simple index for the `firstName` field
+        ['toDoID', 'title'] // <- this will create a compound-index for these two fields
     ]
 };
 

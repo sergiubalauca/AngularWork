@@ -12,7 +12,7 @@ import toDoSchema from './schemas/todo.schema';
 export class DatabaseProvider {
 
   private database: RxDatabase/*<RxDBContext>*/;
-  private dbCollection: RxCollection<ToDo[]>;
+  private dbCollection: RxCollection/*<ToDo>*/;
 
   public getDatabase() {
     return this.database;
@@ -20,6 +20,7 @@ export class DatabaseProvider {
 
   public getCollection() {
     this.dbCollection = this.database.todoscollection;
+    console.log("getting DB collection --- " + this.dbCollection);
     return this.dbCollection;
   }
 
@@ -94,18 +95,4 @@ export class DatabaseProvider {
 
     return myCollection;
   }
-
-
-  async insertIntoDB(collectionName: RxCollection) {
-    console.log("Inserting into db...");
-    const doc = await collectionName.insert({
-      employeeID: 439,
-      title: 'RxDBtitle',
-      description: 'RxDBdescription',
-      status: 'open'
-    });
-
-    return doc;
-  }
-
 }

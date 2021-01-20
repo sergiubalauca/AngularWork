@@ -1,8 +1,9 @@
 <div class="container">
     <button (click)="addToDo()" class="add-todo-button" mat-raised-button color="primary">
         Add ToDo
+
         <li *ngFor="let item of todosRxDB$ | async; index as i">
-            {{item}}
+            {{item.title}}
         </li>
     </button>
 

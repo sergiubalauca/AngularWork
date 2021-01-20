@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../_models';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { DatabaseProvider } from 'src/app/rxdb/rxdb-create';
+import { DatabaseProvider } from 'src/app/rxdb/DatabaseProvider';
 
 /* 
 --- The authentication service is used to login & logout of the Angular app, it notifies other components when the user 

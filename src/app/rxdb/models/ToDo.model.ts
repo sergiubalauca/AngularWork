@@ -1,7 +1,7 @@
 export interface ToDo{
-    id?: number
+    toDoID?: number
     employeeID: number;
     title: string;
     description: string;
-    status: Array<string>;
+    status: string;
 }
