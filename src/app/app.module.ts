@@ -28,6 +28,7 @@ import { ToDoService } from './todo.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DatabaseModule } from './rxdb/database.module';
 import { ToDosRepository } from './rxdb/repositories/todos.repository';
+import { Connectivity } from './shared/network/connectivity.service';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ToDosRepository } from './rxdb/repositories/todos.repository';
     ToDoStore,
     ToDoService,
     CatsService,
+    Connectivity,
     ToDosRepository,
     AuthGuard,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { ToDo } from './ToDo';
 import { Title } from '@angular/platform-browser';
 import { ToDoQuery } from './State/query';
+import { Connectivity } from './shared/network/connectivity.service';
+import { ToDosRepository } from './rxdb/repositories';
 
 /* In case we want to inject a service into this service - required only for a service */
 @Injectable({
@@ -16,12 +18,24 @@ export class ToDoService {
   private _url: string = "https://localhost:44348/api/ToDos/";
   private _envUrl = environment.baseUrl;
 
+  private isOnline: string;
+  private offLineObservable$: Observable<ToDo[]>;
+
+
   constructor(private http: HttpClient,
-    private toDoQuery: ToDoQuery) { }
+    private toDoQuery: ToDoQuery,
+    private connectionStatus: Connectivity,
+    private todosRepo: ToDosRepository) {
+    this.isOnline = this.connectionStatus.connectionStatus()
+  }
 
   /* I receive the observable (the item from the GET request) and cast it into an employee array with IEmployee */
   getToDos(): Observable<ToDo[]> {
-    return this.http.get<ToDo[]>(`${this._envUrl}/ToDos`).pipe((catchError(this.errorHandler)));
+    this.offLineObservable$ = this.todosRepo.getAllToDos$();
+    return this.isOnline ?
+      this.http.get<ToDo[]>(`${this._envUrl}/ToDos`).pipe((catchError(this.errorHandler)))
+      :
+      this.offLineObservable$;
   }
 
   getToDo(id: number): Observable<ToDo> {
@@ -50,15 +64,9 @@ export class ToDoService {
     }
 
     requestBody.status = changes.status;
-    console.log("In ToDoService " + changes);
+    console.log("In ToDoService " + requestBody.status);
     console.log(requestBody);
-    // todos[toDoIndex] = {
-    //   ...todos[toDoIndex],
-    //   status: ToDoStatus.COMPLETED
-    // }
-    // const requestBody = changes.pipe(map( res => res.toDoStatus.value))
-    // console.log(todos.map(res => res.toDoID));
-    // console.log(todos.findIndex(t => t.toDoID == todos.map(res => res.toDoID)));
+    
     return this.http.put<any>(`${this._envUrl}/ToDos/${toDoID}`, requestBody).pipe((catchError(this.errorHandler)));
   }
 

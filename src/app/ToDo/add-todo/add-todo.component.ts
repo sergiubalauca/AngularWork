@@ -10,6 +10,7 @@ import { CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray, transferArrayI
 /* DragDropModule for the ToDo List */
 import { Observable, Subscription } from 'rxjs';
 import { ToDosRepository } from 'src/app/rxdb/repositories';
+import { Connectivity } from 'src/app/shared/network/connectivity.service';
 
 @Component({
   selector: 'app-add-todo',
@@ -19,14 +20,16 @@ import { ToDosRepository } from 'src/app/rxdb/repositories';
 export class AddTodoComponent implements OnInit {
   loading: boolean = false;
 
-  todos: ToDo[] = [];
+  public todos: ToDo[] = [];
 
   public toDoD: ToDo[];
   public doneD: ToDo[];
 
+  public rxToDos: ToDo[];
+
   private toDoSubscription: Subscription;
 
-  public rxitems: ToDo[];
+  public rxitems: ToDo;
   public todosRxDB$: Observable<ToDo[]>;
 
   public toDoComplete: boolean = false;
@@ -36,20 +39,34 @@ export class AddTodoComponent implements OnInit {
     private todoQuery: ToDoQuery,
     private todoStore: ToDoStore,
     private _toDoService: ToDoService,
-    private todosRepo: ToDosRepository) { }
+    private todosRepo: ToDosRepository,
+    private connectionService: Connectivity) { }
 
 
   private canCloseDialog: boolean;
 
   public async refreshRxDB(ToDos: ToDo[]) {
     // this.todosRepo.insertToDos(ToDos);
-    await this.todosRepo.bulkUpsert(ToDos);
+    // await this.todosRepo.bulkUpsert(ToDos);
     this.todosRxDB$ = this.todosRepo.getAllToDos$();
+    // this.todosRxDB$.subscribe(res => {
+    //   this.rxToDos = res.map(t => {
+    //     return {
+    //       toDoID: t.toDoID,
+    //       title: t.title,
+    //       description: t.description,
+    //       employeeID: t.employeeID,
+    //       status: t.status
+    //     }
+    //   });
+    //   console.log("bla bla " + this.rxToDos);
+    // });
+
   }
 
   ngOnInit(): void {
     this.canCloseDialog = false;
-
+    this.connectionService.connectionStatus();
     /* Get the loading and todos array values first */
     this.todoQuery.getLoading().subscribe(res => this.loading = res);
     this.toDoSubscription = this.todoQuery.getToDos().subscribe(res => {
@@ -83,7 +100,7 @@ export class AddTodoComponent implements OnInit {
         };
       });
       this.todoStore.setLoading(false);
-      this.refreshRxDB(this.toDoD);
+
     }, err => {
       console.log("Err store: " + err);
       this.todoStore.setLoading(false);
@@ -91,6 +108,7 @@ export class AddTodoComponent implements OnInit {
     /* Update the other toDos arrays for the drag and drop */
     // this.toDoD = [...this.todos.filter(t => t.status === 'open')];
     // this.doneD = [...this.todos.filter(t => t.status === 'completed')];
+    this.refreshRxDB(this.toDoD);
   }
 
   /* Open the dialog method */

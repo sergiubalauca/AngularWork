@@ -15,7 +15,7 @@ export class ToDosRepository {
         // this.dbProvider.get().collections.$.subscribe(changeEvent => console.dir(changeEvent));
 
 
-        dbColl.subscribe(res => console.log(res));
+        dbColl.subscribe(res => console.log("getAllToDos$ res: " + res));
         return dbColl;
         // return this.dbProvider.get().collections.todos.find().$;
     }
@@ -87,8 +87,10 @@ export class ToDosRepository {
         if (insertedResult.error.length) {
             console.error('Some items failed to sync. Might be because of conflicts');
         }
-
+        /* requestIdlePromise --- Returns a promise which resolves when the database is in idle */
         // await this.dbProvider.getToDoCollection().requestIdlePromise();
+
+        return this.getAllToDos$();
     }
 
     private async initialImport(todos: ToDo[]) {

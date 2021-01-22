@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { hostViewClassName } from '@angular/compiler';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { AuthenticationService } from './Auth/_services/authentication.service';
 import { User } from './Auth/_models/user';
 import { ToDosRepository } from './rxdb/repositories/todos.repository';
 import { DatabaseProvider } from './rxdb/DatabaseProvider';
+import { ToDoService } from './todo.service';
 
 
 
@@ -25,12 +26,8 @@ export class AppComponent {
   public constructor(private router: Router,
     private authenticationService: AuthenticationService,
     private databaseProvider: DatabaseProvider) {
-    //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-  }
 
-  // public initRxDB() {
-  //   console.log(this.todosRepo.getAllJobs$);
-  // }
+  }
 
   async logout() {
     this.authenticationService.logout();

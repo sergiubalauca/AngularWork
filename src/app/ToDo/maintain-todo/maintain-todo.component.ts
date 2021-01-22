@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToDosRepository } from 'src/app/rxdb/repositories';
 
 import { ToDoQuery } from 'src/app/State/query';
 import { ToDoStore } from 'src/app/State/store';
@@ -35,7 +36,8 @@ export class MaintainTodoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data,
     private ToDoService: ToDoService,
     private toDoStore: ToDoStore,
-    private toDoQuery: ToDoQuery
+    private toDoQuery: ToDoQuery,
+    private todosRepo: ToDosRepository
   ) {
 
     this.header = data.header;
@@ -53,6 +55,7 @@ export class MaintainTodoComponent implements OnInit {
     this.dialogRef.close(this.form.value);
     this.buildToDo();
     // console.log(this.todo)
+    // this.todosRepo.bulkUpsert(Array(this.todo));
     this.ToDoService.addToDo(this.todo).subscribe(res => {
       console.log(res);
       /* We are going to update the store with the value returned from the API */
