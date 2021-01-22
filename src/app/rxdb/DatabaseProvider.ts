@@ -1,11 +1,8 @@
+import { Platform } from '@angular/cdk/platform';
 import { Injectable } from '@angular/core';
 import { addRxPlugin, createRxDatabase, RxCollection, RxDatabase, removeRxDatabase } from 'rxdb';
-import { rxdb, RxDBKeyCompressionPlugin } from 'rxdb/dist/types/plugins/key-compression';
-import { map } from 'rxjs/operators';
-import { RxDBContext } from './models/RxDB.db-context';
-import { ToDo } from './models/ToDo.model';
+import idbAdapter from 'pouchdb-adapter-idb';
 import toDoSchema from './schemas/todo.schema';
-
 
 
 @Injectable()
@@ -18,13 +15,13 @@ export class DatabaseProvider {
     return this.database;
   }
 
-  public getCollection() {
+  public getToDoCollection() {
     this.dbCollection = this.database.todoscollection;
-    console.log("getting DB collection --- " + this.dbCollection);
+    // console.log("getting DB collection --- " + this.dbCollection);
     return this.dbCollection;
   }
 
-  constructor() { }
+  constructor(private platform: Platform) { }
 
   public async clearDatabase(): Promise<void> {
     if (this.database) {
@@ -38,11 +35,16 @@ export class DatabaseProvider {
   public async createDB() {
     // first remove the database in case there is a change in the schema. For prod mode, just change the version on the schema
     // removeRxDatabase('myrxdb', 'adapter');
-    if (this.getDatabase())
-      return;
+    if (this.database) {
+      return this.database;
+    }
 
     addRxPlugin(require('pouchdb-adapter-idb'));
     console.log("creating rxdb...");
+
+    const adapter = this.detectAdaptorToBeUsed();
+    console.log('Adaptor being used: ', adapter);
+
     try {
       this.database = await createRxDatabase({
         name: 'myrxdb2',           // <- name
@@ -62,15 +64,15 @@ export class DatabaseProvider {
       console.error(error);
     }
 
-    this.addDBCollection()
+    await this.addDBCollection()
 
     return this.database;
   }
 
   async addDBCollection() {
-    console.log("creating collection ...");
-    if (this.getCollection()) {
-      console.log("collection already exist...");
+    console.log("creating ToDo collection ..." + this.getToDoCollection());
+    if (this.getToDoCollection()) {
+      console.log("ToDo collection already exist...");
       return;
     }
     const myCollection = await this.database.addCollections({
@@ -90,9 +92,19 @@ export class DatabaseProvider {
       }
     });
     // console.log("Collection from rxdb-create: " + myCollection.todos.$.subscribe(res => console.log(res.collectionName)));
-    console.log("Created collection!");
+    console.log("created collection");
 
 
     return myCollection;
   }
+
+  private detectAdaptorToBeUsed(): string | 'idb' {
+    if (this.platform.isBrowser) {
+      addRxPlugin(idbAdapter);
+      return 'idb';
+    } else {
+      return 'No idea what plugin to use...';
+    }
+  }
+
 }

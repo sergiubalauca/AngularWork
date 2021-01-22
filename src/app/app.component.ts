@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from './Auth/_services/authentication.service';
 import { User } from './Auth/_models/user';
 import { ToDosRepository } from './rxdb/repositories/todos.repository';
+import { DatabaseProvider } from './rxdb/DatabaseProvider';
 
 
 
@@ -22,7 +23,8 @@ export class AppComponent {
   currentUser: User;
 
   public constructor(private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private databaseProvider: DatabaseProvider) {
     //this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
@@ -30,8 +32,9 @@ export class AppComponent {
   //   console.log(this.todosRepo.getAllJobs$);
   // }
 
-  logout() {
+  async logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+    await this.databaseProvider.clearDatabase();
   }
 }

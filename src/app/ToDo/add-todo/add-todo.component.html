@@ -1,11 +1,13 @@
 <div class="container">
     <button (click)="addToDo()" class="add-todo-button" mat-raised-button color="primary">
         Add ToDo
+    </button>
 
+    <mat-card>
         <li *ngFor="let item of todosRxDB$ | async; index as i">
             {{item.title}}
         </li>
-    </button>
+    </mat-card>
 
     <mat-spinner *ngIf="loading"></mat-spinner>
 

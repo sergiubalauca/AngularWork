@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { DatabaseProvider } from 'src/app/rxdb/DatabaseProvider';
 
 import { AuthenticationService } from '..//_services';
 
@@ -7,10 +8,11 @@ import { AuthenticationService } from '..//_services';
 export class AuthGuard implements CanActivate {
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private databaseProvider: DatabaseProvider
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const currentUser = this.authenticationService.currentUserValue;
         const isTokenExpired = this.authenticationService.isAuthenticated();
 
@@ -21,6 +23,7 @@ export class AuthGuard implements CanActivate {
 
         // not logged in so redirect to login page with the return url
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+        await this.databaseProvider.clearDatabase();
         return false;
     }
 }

@@ -41,15 +41,10 @@ export class AddTodoComponent implements OnInit {
 
   private canCloseDialog: boolean;
 
-  public initRxDB(ToDo: ToDo[]) {
-    this.todosRepo.insertToDo(ToDo);
-
+  public async refreshRxDB(ToDos: ToDo[]) {
+    // this.todosRepo.insertToDos(ToDos);
+    await this.todosRepo.bulkUpsert(ToDos);
     this.todosRxDB$ = this.todosRepo.getAllToDos$();
-
-    // this.todosRepo.getAllToDos$().subscribe(res => {
-    //   this.rxitems = res;
-    //   // console.log(res[0].description);
-    // });
   }
 
   ngOnInit(): void {
@@ -72,13 +67,15 @@ export class AddTodoComponent implements OnInit {
       filter(res => !res), /* Only when the response is false then the code will be executed because of ! */
       switchMap(() => {
         this.todoStore.setLoading(true);
+        // console.time('/TODOS START api duration');
+        // console.timeEnd('/TODOS END api duration');
         return this._toDoService.getToDos();
+
       })
     ).subscribe(res => { /* Get all the todos */
       this.todoStore.update(_toDoState => {
         console.log("res");
         console.log(res);
-        // this.todos = res;
         return {
           todos: res,
           toDoD: [...res.filter(t => t.status === 'open')],
@@ -86,7 +83,7 @@ export class AddTodoComponent implements OnInit {
         };
       });
       this.todoStore.setLoading(false);
-      this.initRxDB(this.toDoD);
+      this.refreshRxDB(this.toDoD);
     }, err => {
       console.log("Err store: " + err);
       this.todoStore.setLoading(false);
@@ -144,6 +141,7 @@ export class AddTodoComponent implements OnInit {
           }
         })
         this.todoStore.setLoading(false);
+        this.refreshRxDB(this.todos);
       },
       err => { console.log(err) }
     );
@@ -156,13 +154,14 @@ export class AddTodoComponent implements OnInit {
       console.log("Reduce function result: " + [1, 2, 3, 4].reduce((accumulator, currentValue, currentIndex, array) => {
         return accumulator * currentValue
       }, 1));
-
+      this.refreshRxDB(this.todos);
       this.todoStore.update(state => {
         /* return a new state */
         return {
           ...state, /* With this we are spreading the previous state !!!!! */
           todos: state.todos.filter(t => t.toDoID !== toDoID) /* This will remove the todo with this id from the array */
         }
+
       })
     },
       err => console.log(err));
@@ -244,6 +243,7 @@ export class AddTodoComponent implements OnInit {
           }
         })
         this.todoStore.setLoading(false);
+        this.refreshRxDB(this.todos);
       },
       err => { console.log(err) }
     );
