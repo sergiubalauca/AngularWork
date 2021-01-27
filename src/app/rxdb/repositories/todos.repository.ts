@@ -30,6 +30,15 @@ export class ToDosRepository {
         // return this.dbProvider.get().collections.todos.find().$;
     }
 
+    public async updateToDo(ToDo: ToDo) {
+        const query = this.dbProvider.getToDoCollection().find().where('toDoID').eq(ToDo.toDoID);
+        await query.update({
+            $set: {
+                status: ToDo.status
+            }
+        });
+    }
+
     public async insertToDos(rxToDo: ToDo[]) {
         // const todo = this.dbProvider.get().collections;
         // let todoID = new Date().getTime().toString();

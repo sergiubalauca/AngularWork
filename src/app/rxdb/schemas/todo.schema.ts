@@ -23,6 +23,9 @@ const toDoSchema: RxJsonSchema = {
             type: 'string',
             enum: ['open', 'completed']
         },
+        seq:{
+            type: 'number'
+        }
     },
     required: ['employeeID', 'title', 'description', 'status'],
     indexes: [

@@ -66,8 +66,12 @@ export class ToDoService {
     requestBody.status = changes.status;
     console.log("In ToDoService " + requestBody.status);
     console.log(requestBody);
-    
+
     return this.http.put<any>(`${this._envUrl}/ToDos/${toDoID}`, requestBody).pipe((catchError(this.errorHandler)));
+    // return this.isOnline ?
+    // this.http.put<any>(`${this._envUrl}/ToDos/${toDoID}`, requestBody).pipe((catchError(this.errorHandler)))
+    // :
+    // this.todosRepo.updateToDo(requestBody);
   }
 
   deleteToDo(id: number) {
@@ -78,6 +82,11 @@ export class ToDoService {
     const requestBody = { employeeID: todo.employeeID, title: todo.title, description: todo.description };
     // console.log(requestBody);
     return this.http.post<ToDo>(this._url, todo).pipe((catchError(this.errorHandler)));
+    // cica returneaza un promise daca pun cu ? .. : ..
+    // return this.isOnline ?
+    //   this.http.post<ToDo>(this._url, todo).pipe((catchError(this.errorHandler)))
+    //   :
+    //   this.todosRepo.bulkUpsert(Array(todo));
   }
 
   errorHandler(error: HttpErrorResponse) {

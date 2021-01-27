@@ -38,7 +38,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
         const isApiUrl = request.url.startsWith('http://localhost:4000');
         if (isLoggedIn /*&& isApiUrl*/) {
-            console.log("Intercepting adding auth: " + isLoggedIn);
+            // console.log("Intercepting adding auth: " + isLoggedIn);
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.token}`

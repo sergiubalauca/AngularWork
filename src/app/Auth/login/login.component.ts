@@ -8,12 +8,19 @@ import { ToDoService } from 'src/app/todo.service';
 import { ToDosRepository } from 'src/app/rxdb/repositories';
 
 @Component({ templateUrl: 'login.component.html' })
+@Component({
+    selector: 'app-login',
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
+  })
+
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
     submitted = false;
     returnUrl: string;
     error = '';
+    hide = true;
 
     constructor(
         private formBuilder: FormBuilder,

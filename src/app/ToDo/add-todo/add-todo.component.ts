@@ -64,6 +64,19 @@ export class AddTodoComponent implements OnInit {
 
   }
 
+  private compare_seq(a, b) {
+    // a should come before b in the sorted order
+    if (a.qty < b.qty) {
+      return -1;
+      // a should come after b in the sorted order
+    } else if (a.qty > b.qty) {
+      return 1;
+      // a and b are the same
+    } else {
+      return 0;
+    }
+  }
+
   ngOnInit(): void {
     this.canCloseDialog = false;
     this.connectionService.connectionStatus();
@@ -93,6 +106,7 @@ export class AddTodoComponent implements OnInit {
       this.todoStore.update(_toDoState => {
         console.log("res");
         console.log(res);
+        console.log(res.sort(this.compare_seq));
         return {
           todos: res,
           toDoD: [...res.filter(t => t.status === 'open')],
@@ -189,6 +203,8 @@ export class AddTodoComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      console.log("prev idx: " + event.previousIndex);
+      console.log("current idx: " + event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,

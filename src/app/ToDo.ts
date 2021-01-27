@@ -10,12 +10,14 @@ export class ToDo implements ToDoInterface {
     title: string;
     description: string;
     status: string;
+    seq: number;
 
-    constructor(employeeID: number, title: string, description: string, status: string) {
+    constructor(employeeID: number, title: string, description: string, status: string, seq: number) {
         this.employeeID = employeeID;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.seq = seq;
     }
 }
 
