@@ -79,6 +79,7 @@ export class DatabaseProvider {
       todoscollection: {
         schema: toDoSchema,
         migrationStrategies: {
+          // 1: () => null
           // 1 means, this transforms data from version 0 to version 1
           // 1: function (oldDoc) {
           //   //oldDoc.properties = "";  //new Date(oldDoc.time).getTime(); // string to unix

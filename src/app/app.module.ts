@@ -29,6 +29,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DatabaseModule } from './rxdb/database.module';
 import { ToDosRepository } from './rxdb/repositories/todos.repository';
 import { Connectivity } from './shared/network/connectivity.service';
+import { LearningComponent } from './learning/learning.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { Connectivity } from './shared/network/connectivity.service';
     CatsRegisterComponent,
     ReactiveFormComponent,
     AddTodoComponent,
-    MaintainTodoComponent
+    MaintainTodoComponent,
+    LearningComponent
   ],
   imports: [
     BrowserModule,

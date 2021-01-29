@@ -8,6 +8,13 @@
             {{item.title}}
         </li>
     </mat-card>
+    <!-- with ? we make sure that data is loaded and ready for the template; basically
+        the template will wait for the load of data and not display undefined or smth 
+        <mat-card>
+        <li >
+            {{(todosRxDB$ | async)?.Title}}
+        </li>
+    </mat-card> -->
 
     <mat-spinner *ngIf="loading"></mat-spinner>
 

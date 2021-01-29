@@ -19,7 +19,7 @@ export class MaintainTodoComponent implements OnInit {
   form: FormGroup;
   header: string;
 
-  todo: ToDo = new ToDo(439, "", "", "open", null);
+  todo: ToDo = new ToDo(439, "", "", "open", 1);
 
   get toDoTitle() {
     return this.form.get('title');
