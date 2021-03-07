@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,13 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LearningComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+  public googleTrendsRes: any;
 
   ngOnInit(): void {
     this.triggerPromise();
     this.triggerSomeMethod();
+    this.getAll();
   }
 
+  getAll() {
+    return this.http.get(`${'http://localhost:4000'}/googleTrends/googletrends`)
+      .subscribe(res => {
+        console.log(res);
+        this.googleTrendsRes = res;
+      });
+  }
 
   private triggerPromise() {
     var momsPromise = new Promise(function (resolve, reject) {

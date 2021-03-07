@@ -1,6 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
+$primary-color:green;
+$paragraph-color: #148367;
+$primary-background-color: gray;
+
+h1{
+    color:$primary-color;
+}
+
+// div{
+//     background-color: $primary-background-color;
+// }
+
+p{
+    color:$paragraph-color;
+}
 nav a.active{
     color: blue;
 }

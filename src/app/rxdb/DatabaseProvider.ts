@@ -1,7 +1,7 @@
 import { Platform } from '@angular/cdk/platform';
 import { Injectable } from '@angular/core';
 import { addRxPlugin, createRxDatabase, RxCollection, RxDatabase, removeRxDatabase } from 'rxdb';
-import idbAdapter from 'pouchdb-adapter-idb';
+// import idbAdapter from 'pouchdb-adapter-idb';
 import toDoSchema from './schemas/todo.schema';
 
 
@@ -42,8 +42,8 @@ export class DatabaseProvider {
     addRxPlugin(require('pouchdb-adapter-idb'));
     console.log("creating rxdb...");
 
-    const adapter = this.detectAdaptorToBeUsed();
-    console.log('Adaptor being used: ', adapter);
+    // const adapter = this.detectAdaptorToBeUsed();
+    // console.log('Adaptor being used: ', adapter);
 
     try {
       this.database = await createRxDatabase({
@@ -99,13 +99,13 @@ export class DatabaseProvider {
     return myCollection;
   }
 
-  private detectAdaptorToBeUsed(): string | 'idb' {
-    if (this.platform.isBrowser) {
-      addRxPlugin(idbAdapter);
-      return 'idb';
-    } else {
-      return 'No idea what plugin to use...';
-    }
-  }
+  // private detectAdaptorToBeUsed(): string | 'idb' {
+  //   if (this.platform.isBrowser) {
+  //     addRxPlugin(idbAdapter);
+  //     return 'idb';
+  //   } else {
+  //     return 'No idea what plugin to use...';
+  //   }
+  // }
 
 }

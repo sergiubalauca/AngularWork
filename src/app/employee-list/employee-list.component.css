@@ -21,7 +21,7 @@ body {
     align-items: center;
     /* Flex-wrap is for extending the items so that they will will on multiple lines */
 }
-
+    
 .container>div {
     padding: 2px;
     text-align: center;
@@ -42,7 +42,7 @@ body {
 .container>div:nth-child(1) {
     background-color: lightgray;
     color: black;
-    /* Align self makes it so that the item us aligned on the Y axis itself */
+    /* Align self makes it so that the item is aligned on the Y axis itself */
     /*align-self: flex-start;*/
     flex: 1 1 75px;
 }
