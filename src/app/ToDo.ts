@@ -5,7 +5,7 @@ export interface ToDoInterface {
 }
 
 export class ToDo implements ToDoInterface {
-    toDoID?: number
+    toDoID?: number;
     employeeID: number;
     title: string;
     description: string;

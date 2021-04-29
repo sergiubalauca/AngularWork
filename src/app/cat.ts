@@ -18,9 +18,9 @@ export interface IGetCatService {
 }
 
 export interface IGetCatTable {
-    Id: number,
-    Colour: string,
-    Name: string
+    Id: number;
+    Colour: string;
+    Name: string;
 }
 
 
@@ -28,7 +28,7 @@ export class ICatServiceResponsePost {
     request: IGetCatTablePost;
 
     constructor(
-    request: IGetCatTablePost) {
+        request: IGetCatTablePost) {
         this.request = request;
     }
 }

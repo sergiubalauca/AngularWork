@@ -53,7 +53,7 @@ export class CatsListComponent implements OnInit {
     //   .pipe(map(res => res['response']))
     //   .subscribe(data => {
     //     /* assign the data  received from the observable to the local employees property */
-    //     this.cats = data; 
+    //     this.cats = data;
     //     //console.log(data);
     //     //console.log(this.cats2);
     //   },
