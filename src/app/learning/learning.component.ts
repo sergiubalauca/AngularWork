@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { QuestionBase } from '../datamine/dynamic-form/question-base';
+import { QuestionService } from '../datamine/dynamic-form/services/question.service';
 
 @Component({
   selector: 'app-learning',
@@ -8,46 +11,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LearningComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    service: QuestionService) {
+    this.questions$ = service.getQuestions();
+  }
   public googleTrendsRes: any;
+
+  questions$: Observable<QuestionBase<any>[]>;
 
   ngOnInit(): void {
     this.triggerPromise();
     this.triggerSomeMethod();
-    this.getAll();
-  }
-
-  getAll() {
-    return this.http.get(`${'http://localhost:4000'}/googleTrends/googletrends`)
-      .subscribe(res => {
-        console.log(res);
-        this.googleTrendsRes = res;
-      });
   }
 
   private triggerPromise() {
-    var momsPromise = new Promise(function (resolve, reject) {
-      let momsSavings = 30000;
-      let priceOfPhone = 20000;
+    const momsPromise = new Promise((resolve, reject) => {
+      const momsSavings = 30000;
+      const priceOfPhone = 20000;
 
       if (momsSavings > priceOfPhone) {
         resolve({
-          brand: "iphone",
-          model: "6s"
+          brand: 'iphone',
+          model: '6s'
         });
       } else {
-        reject("We donot have enough savings. Let us save some more money.");
+        reject('We donot have enough savings. Let us save some more money.');
       }
     });
-    momsPromise.then(function (value) {
-      console.log("Hurray I got this phone as a gift ", JSON.stringify(value));
+    momsPromise.then((value) => {
+      console.log('Hurray I got this phone as a gift ', JSON.stringify(value));
     });
-    momsPromise.catch(function (reason) {
-      console.log("Mom coudn't buy me the phone because ", reason);
+    momsPromise.catch((reason) => {
+      console.log(`Mom coudn't buy me the phone because `, reason);
     });
-    momsPromise.finally(function () {
+    momsPromise.finally(() => {
       console.log(
-        "Irrespecitve of whether my mom can buy me a phone or not, I still love her"
+        'Irrespecitve of whether my mom can buy me a phone or not, I still love her'
       );
     });
   }

@@ -30,6 +30,8 @@ import { DatabaseModule } from './rxdb/database.module';
 import { ToDosRepository } from './rxdb/repositories/todos.repository';
 import { Connectivity } from './shared/network/connectivity.service';
 import { LearningComponent } from './learning/learning.component';
+import { DynamicFormQuestionComponent } from './datamine/dynamic-form/components/dynamic-form-question/dynamic-form-question/dynamic-form-question.component';
+import { DynamicFormComponent } from './datamine/dynamic-form/components/dynamic-form/dynamic-form.component';
 
 @NgModule({
   declarations: [
@@ -46,14 +48,16 @@ import { LearningComponent } from './learning/learning.component';
     ReactiveFormComponent,
     AddTodoComponent,
     MaintainTodoComponent,
-    LearningComponent
+    LearningComponent,
+    DynamicFormQuestionComponent,
+    DynamicFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule, /* This is for the ngDirective - two way binding */
-    /* For the http calls and observables we are going to use 
-     * we are using it in employee.service.ts as private http:HttpClient in the constructor 
+    /* For the http calls and observables we are going to use
+     * we are using it in employee.service.ts as private http:HttpClient in the constructor
      */
     HttpClientModule,
     ChartsModule,
@@ -81,7 +85,7 @@ import { LearningComponent } from './learning/learning.component';
     JwtHelperService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },],
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent],
   entryComponents: [MaintainTodoComponent]
 })
