@@ -4,6 +4,7 @@ import { DropdownQuestion } from '../question-dropdown';
 import { QuestionBase } from '../question-base';
 import { TextboxQuestion } from '../question-textbox';
 import { of } from 'rxjs';
+import { CheckBoxQuestion } from '../question-checkbox';
 
 @Injectable({ providedIn: 'root' })
 export class QuestionService {
@@ -11,7 +12,7 @@ export class QuestionService {
   // TODO: get from a remote source of question metadata
   getQuestions() {
 
-    const questions: QuestionBase<string>[] = [
+    const questions: QuestionBase<any>[] = [
 
       new DropdownQuestion({
         key: 'brave',
@@ -23,6 +24,14 @@ export class QuestionService {
           { key: 'unproven', value: 'Unproven' }
         ],
         order: 4
+      }),
+
+      new CheckBoxQuestion({
+        key: 'checkbox',
+        label: 'Check the box',
+        order: 5,
+        type: 'checkbox',
+        // value: true,
       }),
 
       new TextboxQuestion({

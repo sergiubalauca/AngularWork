@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Console } from 'console';
 import { Observable } from 'rxjs';
 import { QuestionBase } from '../datamine/dynamic-form/question-base';
 import { QuestionService } from '../datamine/dynamic-form/services/question.service';
@@ -16,7 +17,6 @@ export class LearningComponent implements OnInit {
     service: QuestionService) {
     this.questions$ = service.getQuestions();
   }
-  public googleTrendsRes: any;
 
   questions$: Observable<QuestionBase<any>[]>;
 
@@ -60,9 +60,9 @@ export class LearningComponent implements OnInit {
 
   private triggerSomeMethod() {
     var retval = [2, 5, 8, 1, 4].some(this.someMethod);
-    console.log("Returned value1 is : " + retval);
+    console.log('Returned value1 is : ' + retval);
 
     var retval = [12, 5, 8, 1, 4].some(this.someMethod);
-    console.log("Returned value2 is : " + retval);
+    console.log('Returned value2 is : ' + retval);
   }
 }

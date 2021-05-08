@@ -32,6 +32,8 @@ import { Connectivity } from './shared/network/connectivity.service';
 import { LearningComponent } from './learning/learning.component';
 import { DynamicFormQuestionComponent } from './datamine/dynamic-form/components/dynamic-form-question/dynamic-form-question/dynamic-form-question.component';
 import { DynamicFormComponent } from './datamine/dynamic-form/components/dynamic-form/dynamic-form.component';
+import { MatTableComponent } from './datamine/dynamic-table/mat-table/mat-table.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { DynamicFormComponent } from './datamine/dynamic-form/components/dynamic
     MaintainTodoComponent,
     LearningComponent,
     DynamicFormQuestionComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
+    MatTableComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { DynamicFormComponent } from './datamine/dynamic-form/components/dynamic
     BrowserAnimationsModule,
     MaterialModule,
     DragDropModule,
-    DatabaseModule
+    DatabaseModule,
+    MatTableModule
   ],
   /* Registered (linked) the service at module level, in order for it to be
   * available for all the sub hierarchy classes and components - step 2 for using a service.

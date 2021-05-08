@@ -11,7 +11,7 @@ import { QuestionControlService } from '../../services/question-control.service'
 })
 export class DynamicFormComponent implements OnInit {
 
-  @Input() questions: QuestionBase<string>[] = [];
+  @Input() questions: QuestionBase<any>[] = [];
   form: FormGroup;
   payLoad = '';
 
