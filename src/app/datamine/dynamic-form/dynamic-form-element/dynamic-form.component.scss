@@ -1,0 +1,23 @@
+:host {
+    ion-item-group {
+        form {
+            ion-item {
+                &.pair {
+                    display: flex;
+                    --background: transparent;
+                    justify-content: space-around;
+                }
+
+                ion-input {
+                    --border-color: var(--ion-color-medium-shade);
+                    --border-radius: 3px;
+                    --border-width: 1px;
+                    --box-shadow: 2px red;
+                    --highlight-height: 0;
+                    --background: transparent;
+                    --color: green;
+                }
+            }
+        }
+    }
+}

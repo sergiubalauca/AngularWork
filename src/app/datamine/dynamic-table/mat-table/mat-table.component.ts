@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { QuestionBase } from '../../dynamic-form/question-base';
 import { QuestionService } from '../../dynamic-form/services/question.service';
+import { ReadJsonService } from '../services/read-json.service';
 
 @Component({
   selector: 'app-mat-table',
@@ -30,11 +31,15 @@ export class MatTableComponent implements OnInit {
     }
   ];
 
-  constructor(service: QuestionService) {
+  constructor(
+    service: QuestionService,
+    private readJsonService: ReadJsonService) {
     this.questions$ = service.getQuestions();
   }
 
   ngOnInit(): void {
+    this.readJsonService.fillTableData();
+
     this.questions$.subscribe(res => res.forEach((elem) => {
       //console.log(elem.key);
       //this.tableCols.push(elem.key);

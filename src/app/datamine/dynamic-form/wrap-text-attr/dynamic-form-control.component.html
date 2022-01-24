@@ -1,0 +1,73 @@
+<ion-item-group [formGroup]="form">
+	<ion-grid class="ion-no-padding">
+		<ion-row class="ion-no-padding" [ngClass]="!isLongText ? 'inputElement' : 'textArea'">
+			<ion-col size="5">
+				<ion-label
+					[attr.for]="dynamicFormControl.key"
+					class="ion-text-wrap"
+					required-attribute="*"
+					*ngIf="dynamicFormControl.required; else notRequired"
+					>{{ dynamicFormControl.label }}</ion-label
+				>
+				<ng-template #notRequired>
+					<ion-label [attr.for]="dynamicFormControl.key" class="ion-text-wrap">{{
+						dynamicFormControl.label
+					}}</ion-label>
+				</ng-template>
+			</ion-col>
+
+			<ion-col [size]="gridFieldSize" [ngSwitch]="dynamicFormControl.controlType">
+				<ng-container *ngIf="!isLongText">
+					<ion-input
+						*ngSwitchCase="'textbox'"
+						name="dynamicFormControl.key"
+						[type]="dynamicFormControl.type"
+						[formControlName]="dynamicFormControl.key"
+						[readonly]="dynamicFormControl.disabled"
+						[ngClass]="
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+								? 'error-class'
+								: ''
+						"
+					></ion-input>
+				</ng-container>
+
+				<ng-container *ngIf="isLongText">
+					<ion-textarea
+						rows="2"
+						*ngSwitchCase="'textbox'"
+						name="dynamicFormControl.key"
+						[formControlName]="dynamicFormControl.key"
+						[readonly]="dynamicFormControl.disabled"
+						[ngClass]="
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+								? 'error-class'
+								: ''
+						"
+					>
+					</ion-textarea>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+		<ion-row class="messages">
+			<ion-col size="5"></ion-col>
+
+			<ion-col [size]="gridFieldSize" [ngSwitch]="dynamicFormControl.controlType">
+				<ng-container *ngFor="let validation of dynamicFormControl.validationMessages">
+					<ion-note
+						*ngIf="
+							form.get(dynamicFormControl.key).errors &&
+							form.get(dynamicFormControl.key).errors[validation.type] &&
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+						"
+					>
+						{{ validation.message }}
+					</ion-note>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-item-group>

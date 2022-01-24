@@ -1,0 +1,11 @@
+<ion-item-group class="ion-padding" lines="none">
+  <form [formGroup]="form" class="form-group">
+    <ion-item class="pair" lines="none">
+      <ion-label [attr.for]="formElement.key">{{formElement.label}}</ion-label>
+
+      <ion-item [ngSwitch]="formElement.controlType" class="form-items" lines="none">
+        <ion-input *ngSwitchCase="'textbox'" name="formElement.key"></ion-input>
+      </ion-item>
+    </ion-item>
+  </form>
+</ion-item-group>

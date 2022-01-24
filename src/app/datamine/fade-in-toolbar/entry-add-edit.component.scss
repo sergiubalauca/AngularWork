@@ -1,0 +1,65 @@
+:host {
+	app-header {
+		&::after {
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: auto;
+			content: "";
+			width: 100%;
+			background: var(--ion-color-background);
+			height: 70px;
+		}
+	}
+
+	ion-toolbar {
+		-webkit-mask-image: -webkit-gradient(
+			linear,
+			left top,
+			left bottom,
+			from(rgba(0, 0, 0, 1)),
+			to(rgba(0, 0, 0, 0))
+		);
+		// next line is needed for avoiding warning from -webkit-mask-image
+		mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
+		position: absolute;
+		top: 70px;
+		height: 25px;
+		align-self: center;
+		z-index: 110;
+	}
+
+	ion-content {
+		--background: transparent;
+
+		app-dynamic-form {
+			position: absolute;
+			top: 10px;
+		}
+
+		&::before {
+			position: absolute;
+			top: -5px;
+			z-index: 109;
+			right: 0;
+			left: 0;
+			bottom: auto;
+			content: "";
+			width: 100%;
+			background: var(--ion-color-light-08);
+			height: 15px;
+			border-radius: 30px 30px 0 0;
+		}
+
+		ion-fab {
+			ion-fab-button {
+				--background: var(--ion-color-primary-tint);
+
+				ion-icon {
+					--color: var(--ion-color-light-08);
+				}
+			}
+		}
+	}
+}

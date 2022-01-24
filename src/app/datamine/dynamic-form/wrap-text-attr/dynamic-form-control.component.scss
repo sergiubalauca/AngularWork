@@ -1,0 +1,69 @@
+:host {
+	ion-item-group {
+		ion-grid {
+			padding: 0px 10px;
+
+			ion-row {
+				display: flex;
+
+				&.inputElement {
+					align-items: center;
+				}
+
+				&.textArea {
+					flex-direction: column;
+				}
+
+				&:first-child {
+					ion-col {
+						margin-top: 10px;
+
+						ion-label {
+							--color: var(--ion-color-primary-tint);
+							font-family: var(--ion-font-family-medium);
+							font-size: 13px;
+						}
+						ion-label[required-attribute='*']::after {
+							content: attr(required-attribute);
+						}
+
+						&:last-child {
+							ion-input,
+							ion-textarea {
+								--padding-start: 7px;
+								--padding-end: 7px;
+
+								border-radius: 8px;
+								border: solid 2px;
+								border-color: var(--ion-color-light-09);
+								font-size: 13px;
+								color: var(--ion-color-grey);
+								font-family: var(--ion-font-family-bold);
+
+								&.error-class {
+									border-color: var(--ion-color-error);
+								}
+							}
+						}
+					}
+				}
+
+				&:last-child {
+					ion-col {
+						&:last-child {
+							display: flex;
+							flex-direction: column;
+							margin-top: 3px;
+
+							ion-note {
+								font-family: var(--ion-font-family-medium);
+								font-size: 9px;
+								--color: var(--ion-color-error);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

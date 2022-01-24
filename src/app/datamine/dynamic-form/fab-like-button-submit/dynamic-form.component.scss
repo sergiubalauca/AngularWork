@@ -1,0 +1,68 @@
+:host {
+	form {
+		padding-bottom: 70px;
+
+		ion-grid {
+			padding: 0;
+		}
+
+		ion-fab {
+			ion-fab-button {
+				--background: var(--ion-color-primary-tint);
+				position: fixed;
+				transform: translate(-55px, -55px);
+				&.buttonDisabled {
+					--background: var(--ion-color-light-10);
+					opacity: 1;
+				}
+
+				ion-icon {
+					--color: var(--ion-color-light-08);
+				}
+			}
+		}
+
+		// ion-button {
+		// 	--transition: background-color, opacity 100ms linear;
+		// 	--ripple-color: currentColor;
+		// 	--border-radius: 50%;
+		// 	--border-width: 0;
+		// 	--border-style: none;
+		// 	--border-color: initial;
+		// 	--padding-top: 0;
+		// 	--padding-end: 0;
+		// 	--padding-bottom: 0;
+		// 	--padding-start: 0;
+		// 	margin-left: 0;
+		// 	margin-right: 0;
+		// 	margin-top: 0;
+		// 	margin-bottom: 0;
+		// 	display: block;
+		// 	width: 56px;
+		// 	height: 56px;
+		// 	position: relative;
+		// 	font-size: 14px;
+		// 	text-align: center;
+		// 	text-overflow: ellipsis;
+		// 	text-transform: none;
+		// 	white-space: nowrap;
+		// 	-webkit-font-kerning: none;
+		// 	font-kerning: none;
+
+		// 	position: fixed;
+		// 	transform: translate(-50px, -50px);
+		// 	--background: var(--ion-color-primary-tint);
+
+		// 	ion-icon {
+		// 		--color: var(--ion-color-light-08);
+
+		// 		font-size: 30px;
+		// 		margin: 0;
+		// 		position: absolute;
+		// 		top: 50%;
+		// 		-ms-transform: translateY(-50%);
+		// 		transform: translateY(-50%);
+		// 	}
+		// }
+	}
+}

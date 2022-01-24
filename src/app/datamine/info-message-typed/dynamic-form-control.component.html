@@ -1,0 +1,70 @@
+<ion-item-group [formGroup]="form">
+	<ion-grid class="ion-no-padding">
+		<ion-row class="ion-no-padding" [ngClass]="!isLongText ? 'inputElement' : 'textArea'">
+			<ion-col size="5">
+				<ion-label [attr.for]="dynamicFormControl.key">{{ dynamicFormControl.label }}</ion-label>
+				<ion-note *ngIf="dynamicFormControl.required">*</ion-note>
+			</ion-col>
+
+			<ion-col [size]="gridFieldSize" [ngSwitch]="dynamicFormControl.controlType">
+				<ng-container *ngIf="!isLongText">
+					<ion-input
+						*ngSwitchCase="'textbox'"
+						name="dynamicFormControl.key"
+						[type]="dynamicFormControl.type"
+						[formControlName]="dynamicFormControl.key"
+						[ngClass]="
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+								? 'error-class'
+								: ''
+						"
+					></ion-input>
+				</ng-container>
+
+				<ng-container *ngIf="isLongText">
+					<ion-textarea
+						rows="2"
+						*ngSwitchCase="'textbox'"
+						name="dynamicFormControl.key"
+						[formControlName]="dynamicFormControl.key"
+						[ngClass]="
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+								? 'error-class'
+								: ''
+						"
+					>
+					</ion-textarea>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+		<ion-row class="messages">
+			<ion-col size="5"> </ion-col>
+
+			<ion-col [size]="gridFieldSize" [ngSwitch]="dynamicFormControl.controlType">
+				<ion-note class="warning-message" *ngIf="form.get(dynamicFormControl.key).value !== '' && isLongText">
+					{{ 'formValidations.maximumLength.charactersTyped.typed' | translate }}
+					{{ form.get(dynamicFormControl.key).value.length }}
+					{{ 'formValidations.maximumLength.charactersTyped.separator' | translate }}
+					{{ dynamicFormControl.width }}
+					{{ 'formValidations.maximumLength.charactersTyped.characters' | translate }}
+				</ion-note>
+
+				<ng-container *ngFor="let validation of dynamicFormControl.validationMessages">
+					<ion-note
+						class="error-message"
+						*ngIf="
+							form.get(dynamicFormControl.key).errors &&
+							form.get(dynamicFormControl.key).errors[validation.type] &&
+							form.get(dynamicFormControl.key).invalid &&
+							(form.get(dynamicFormControl.key).dirty || form.get(dynamicFormControl.key).touched)
+						"
+					>
+						{{ validation.message }} <br />
+					</ion-note>
+				</ng-container>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-item-group>

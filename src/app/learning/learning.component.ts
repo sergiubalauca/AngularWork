@@ -4,6 +4,7 @@ import { Console } from 'console';
 import { Observable } from 'rxjs';
 import { QuestionBase } from '../datamine/dynamic-form/question-base';
 import { QuestionService } from '../datamine/dynamic-form/services/question.service';
+import { ReadJsonService } from '../datamine/dynamic-table/services/read-json.service';
 
 @Component({
   selector: 'app-learning',
@@ -14,15 +15,17 @@ export class LearningComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    service: QuestionService) {
-    this.questions$ = service.getQuestions();
+    private questionService: QuestionService) {
+
   }
 
   questions$: Observable<QuestionBase<any>[]>;
 
   ngOnInit(): void {
-    this.triggerPromise();
-    this.triggerSomeMethod();
+    // this.triggerPromise();
+    // this.triggerSomeMethod();
+    this.questions$ = this.questionService.getQuestions();
+    // this.readJsonService.fillTableData();
   }
 
   private triggerPromise() {

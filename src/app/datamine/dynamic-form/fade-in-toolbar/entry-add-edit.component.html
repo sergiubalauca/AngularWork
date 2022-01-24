@@ -1,0 +1,12 @@
+<app-header [headerTitle]="tableTitle$ | async" [backBtnEnabled]="true" [backBtnIconClose]="true"></app-header>
+
+<ion-toolbar class="ion-no-border"></ion-toolbar>
+
+<ion-content class="ion-padding">
+	<app-dynamic-form [tableName]="tableName"></app-dynamic-form>
+	<ion-fab horizontal="end" vertical="bottom" slot="fixed" class="ion-margin">
+		<ion-fab-button disabled>
+			<ion-icon class="icon-Save"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>
